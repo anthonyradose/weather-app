@@ -51,7 +51,7 @@ function App() {
   useEffect(() => {
     getData();
   }, []);
-
+hdsahadshasdhads
   const getCurr = async () => {
     const res = await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
