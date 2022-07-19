@@ -9,6 +9,7 @@ function App() {
   const [temp, setTemp] = useState("");
   const [condition, setCondition] = useState("");
   const [time, setTime] = useState("");
+  const [foundCities, setFoundCities] = useState("");
 
   const getCities = async () => {
     const res = await axios.get(
@@ -17,7 +18,7 @@ function App() {
     const countriesArr = res.data.data;
     const citiesArr = countriesArr.map((Arr) => Arr.cities);
     const citiesAll = citiesArr.flat();
-    setFoundUsers(citiesAll);
+    setFoundCities(citiesAll);
   };
   useEffect(() => {
     getCities();
@@ -31,7 +32,7 @@ function App() {
     const keyword = e.target.value;
 
     if (keyword !== "") {
-      const results = foundUsers.filter((user) => {
+      const results = foundCities.filter((user) => {
         return user.toLowerCase().startsWith(keyword.toLowerCase());
         // Use the toLowerCase() method to make it case-insensitive
       });
@@ -39,7 +40,6 @@ function App() {
     } else {
       setFoundUsers("");
     }
-
     setName(keyword);
   };
 
@@ -51,9 +51,10 @@ function App() {
   useEffect(() => {
     getData();
   }, []);
-hdsahadshasdhads
+
   const getCurr = async () => {
-    const res = await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
+    const res =
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
@@ -79,7 +80,7 @@ hdsahadshasdhads
             onChange={filter}
           />
           <div className="user-list">
-            {foundUsers && foundUsers.length > 0 
+            {foundUsers && foundUsers.length > 0
               ? foundUsers.map((user) => (
                   <li className="user">
                     <span className="user-name">{user}</span>
