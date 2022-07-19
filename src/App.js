@@ -79,8 +79,8 @@ function App() {
             onChange={filter}
           />
           <div className="user-list">
-            {foundUsers && foundUsers.length > 0
-              ? foundUsers?.map((user) => (
+            {foundUsers && foundUsers.length > 0 
+              ? foundUsers.map((user) => (
                   <li className="user">
                     <span className="user-name">{user}</span>
                   </li>
