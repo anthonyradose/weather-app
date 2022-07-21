@@ -1,15 +1,14 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
 
 function App() {
-  //creating IP state
   const [city, setCity] = useState("");
   const [temp, setTemp] = useState("");
   const [condition, setCondition] = useState("");
   const [time, setTime] = useState("");
   const [foundCities, setFoundCities] = useState("");
+  const [icon, setIcon] = useState("")
 
   const getCities = async () => {
     const res = await axios.get(
@@ -22,15 +21,12 @@ function App() {
   };
   useEffect(() => {
     getCities();
-  });
-
+  }, []);
   const [name, setName] = useState("");
   // the search result
   const [foundUsers, setFoundUsers] = useState("");
-
   const filter = (e) => {
     const keyword = e.target.value;
-
     if (keyword !== "") {
       const results = foundCities.filter((user) => {
         return user.toLowerCase().startsWith(keyword.toLowerCase());
@@ -43,10 +39,9 @@ function App() {
     setName(keyword);
   };
 
-  //creating function to load ip address from the API
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    setCity(res.data.city);
+    res.data.city === null ? setCity(res.data.IPv4) : setCity(res.data.city)
   };
   useEffect(() => {
     getData();
@@ -56,6 +51,8 @@ function App() {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
+    console.log(res)
+    // setCity(res.data.location.region)
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
@@ -63,10 +60,25 @@ function App() {
     const date = new Date(str);
     const today = date.toString().slice(0, 10);
     setTime(today);
+    setIcon(res.data.current.condition.icon)
   };
   useEffect(() => {
     getCurr();
   });
+
+  const handleClick = async (event) => {
+    const res =
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${event}&aqi=no
+`);
+    setTemp(res.data.current.temp_c);
+    setCondition(res.data.current.condition.text);
+    const tim = res.data.location.localtime.slice(0, 10);
+    const str = tim;
+    const date = new Date(str);
+    const today = date.toString().slice(0, 10);
+    setTime(today);
+    setCity(res.data.location.name);
+  };
 
   return (
     <div className="App">
@@ -82,7 +94,7 @@ function App() {
           <div className="user-list">
             {foundUsers && foundUsers.length > 0
               ? foundUsers.map((user) => (
-                  <li className="user">
+                  <li className="user" onClick={() => handleClick(user)}>
                     <span className="user-name">{user}</span>
                   </li>
                 ))
@@ -95,7 +107,7 @@ function App() {
           <div className="weather-img-div">
             <img
               className="weather-img"
-              src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80"
+              src={icon}
               alt="jimmy"
             />
           </div>

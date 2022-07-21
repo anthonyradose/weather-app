@@ -135,8 +135,14 @@ html, body, #root{
   background-color: blue;
 }
 .user-list{
-  height: 50px;
-  overflow: hidden;
+  height: 500px;
+  background: white;
+  overflow: auto;
+  margin-top: 500px;
+  padding: 3%;
+}
+.user{
+  cursor: pointer;
 }
 
 .five-day-weather{
