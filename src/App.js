@@ -9,6 +9,8 @@ function App() {
   const [time, setTime] = useState("");
   const [foundCities, setFoundCities] = useState("");
   const [icon, setIcon] = useState("")
+  const [show, setShow] = useState(true);
+
 
   const getCities = async () => {
     const res = await axios.get(
@@ -51,8 +53,6 @@ function App() {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
-    console.log(res)
-    // setCity(res.data.location.region)
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
@@ -80,6 +80,7 @@ function App() {
     setCity(res.data.location.name);
   };
 
+
   return (
     <div className="App">
       <div className="thirty">
@@ -94,7 +95,7 @@ function App() {
           <div className="user-list">
             {foundUsers && foundUsers.length > 0
               ? foundUsers.map((user) => (
-                  <li className="user" onClick={() => handleClick(user)}>
+                  <li className="user" onClick={() => {handleClick(user); setShow((s) => !s)}} style={{ display: show ? "block" : "none" }}>
                     <span className="user-name">{user}</span>
                   </li>
                 ))
@@ -103,6 +104,7 @@ function App() {
 
           <button>Locate</button>
         </div>
+
         <div className="middle-eighty">
           <div className="weather-img-div">
             <img
@@ -129,8 +131,18 @@ function App() {
         </div>
       </div>
 
+
+
+
+
+
+
+
+
+
+
       <div className="seventy">
-        <div className="forty">
+        {/* <div className="forty">
           <div className="seventy-top-twenty">
             <div className="temp-div">
               <span>Celsius</span> <span>Farenheit</span>
@@ -256,9 +268,10 @@ function App() {
           <div className="sixty-bottom-thirty">
             <h4>Created by Chris Kasatka blah blah blah</h4>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
+    
   );
 }
 
