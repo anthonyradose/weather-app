@@ -11,7 +11,7 @@ function App() {
   const [icon, setIcon] = useState("")
   const [show, setShow] = useState(true);
 
-
+// N3IN
   const getCities = async () => {
     const res = await axios.get(
       "https://countriesnow.space/api/v0.1/countries"
