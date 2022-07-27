@@ -1,6 +1,11 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import OutsideClickHandler from 'react-outside-click-handler';
+
 
 function App() {
   const [city, setCity] = useState("");
@@ -8,10 +13,10 @@ function App() {
   const [condition, setCondition] = useState("");
   const [time, setTime] = useState("");
   const [foundCities, setFoundCities] = useState("");
-  const [icon, setIcon] = useState("")
-  const [show, setShow] = useState(true);
+  const [icon, setIcon] = useState("");
+  // const [show, setShow] = useState(true);
 
-// N3INsaddasasd`
+  // GET ALL THE CITIES OF THE WORLD:
   const getCities = async () => {
     const res = await axios.get(
       "https://countriesnow.space/api/v0.1/countries"
@@ -41,18 +46,21 @@ function App() {
     setName(keyword);
   };
 
+  // GET CURRENT LOCATION:
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    res.data.city === null ? setCity(res.data.IPv4) : setCity(res.data.city)
+    res.data.city === null ? setCity(res.data.IPv4) : setCity(res.data.city);
   };
   useEffect(() => {
     getData();
   }, []);
 
+  // GET CURRENT LOCATION INFO:
   const getCurr = async () => {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
+    console.log(res);
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
@@ -60,10 +68,11 @@ function App() {
     const date = new Date(str);
     const today = date.toString().slice(0, 10);
     setTime(today);
-    setIcon(res.data.current.condition.icon)
+    setIcon(res.data.current.condition.icon);
   };
   useEffect(() => {
-    getCurr();
+    if (city !== "" && city !== " " && city !== null && city !== undefined)
+      getCurr();
   });
 
   const handleClick = async (event) => {
@@ -80,7 +89,6 @@ function App() {
     setCity(res.data.location.name);
   };
 
-
   return (
     <div className="App">
       <div className="thirty">
@@ -91,27 +99,41 @@ function App() {
             name="q"
             value={name}
             onChange={filter}
+            onClick={filter}
+            placeholder="Search for cities"
           />
-          <div className="user-list">
-            {foundUsers && foundUsers.length > 0
-              ? foundUsers.map((user) => (
-                  <li className="user" onClick={() => {handleClick(user); setShow((s) => !s)}} style={{ display: show ? "block" : "none" }}>
-                    <span className="user-name">{user}</span>
-                  </li>
-                ))
-              : null}
-          </div>
 
-          <button>Locate</button>
+          {foundUsers && foundUsers.length > 0 ? (
+            <OutsideClickHandler   className="JAMES"
+            onOutsideClick={() => {
+              setFoundUsers("");
+            }}>
+            <div className="user-list">
+              {foundUsers.map((user) => (
+                <li
+                  className="user"
+                  onClick={() => {
+                    handleClick(user);
+                    setFoundUsers("")
+                    setName(user);
+                  }}
+                >
+                  <span className="user-name">{user}</span>
+                </li>
+              ))}
+            </div>
+            </OutsideClickHandler>
+          ) : null}
+          <FontAwesomeIcon
+            className="crosshair"
+            icon={faLocationCrosshairs}
+            onClick={getData}
+          />
         </div>
 
         <div className="middle-eighty">
           <div className="weather-img-div">
-            <img
-              className="weather-img"
-              src={icon}
-              alt="jimmy"
-            />
+            <img className="weather-img" src={icon} alt="jimmy" />
           </div>
           <div className="weather-temp-div">
             <h1 className="weather-temp">{temp}&#8451;</h1>
@@ -126,20 +148,13 @@ function App() {
             <span className="date">{time}</span>
           </div>
           <div className="location-div">
+            <span>
+              <FontAwesomeIcon icon={faLocationDot} />
+            </span>
             <span className="location-span">{city}</span>
           </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
 
       <div className="seventy">
         {/* <div className="forty">
@@ -271,7 +286,6 @@ function App() {
         </div> */}
       </div>
     </div>
-    
   );
 }
 
