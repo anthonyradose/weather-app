@@ -4,8 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import OutsideClickHandler from 'react-outside-click-handler';
-
+import OutsideClickHandler from "react-outside-click-handler";
 
 function App() {
   const [city, setCity] = useState("");
@@ -21,6 +20,7 @@ function App() {
     const res = await axios.get(
       "https://countriesnow.space/api/v0.1/countries"
     );
+    console.log(res)
     const countriesArr = res.data.data;
     const citiesArr = countriesArr.map((Arr) => Arr.cities);
     const citiesAll = citiesArr.flat();
@@ -60,7 +60,6 @@ function App() {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
-    console.log(res);
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
@@ -93,6 +92,7 @@ function App() {
     <div className="App">
       <div className="thirty">
         <div className="top-ten">
+          <div className="top-ten-top">
           <input
             type="search"
             id="site-search"
@@ -102,33 +102,37 @@ function App() {
             onClick={filter}
             placeholder="Search for cities"
           />
-
-          {foundUsers && foundUsers.length > 0 ? (
-            <OutsideClickHandler   className="JAMES"
-            onOutsideClick={() => {
-              setFoundUsers("");
-            }}>
-            <div className="user-list">
-              {foundUsers.map((user) => (
-                <li
-                  className="user"
-                  onClick={() => {
-                    handleClick(user);
-                    setFoundUsers("")
-                    setName(user);
-                  }}
-                >
-                  <span className="user-name">{user}</span>
-                </li>
-              ))}
-            </div>
-            </OutsideClickHandler>
-          ) : null}
-          <FontAwesomeIcon
+    <FontAwesomeIcon
             className="crosshair"
             icon={faLocationCrosshairs}
             onClick={getData}
           />
+          </div>
+          <div className="top-ten-bottom">
+          {foundUsers && foundUsers.length > 0 ? (
+            <OutsideClickHandler
+              className="JAMES"
+              onOutsideClick={() => {
+                setFoundUsers("");
+              }}
+            >
+              <div className="user-list">
+                {foundUsers.map((user) => (
+                  <li
+                    className="user"
+                    onClick={() => {
+                      handleClick(user);
+                      setFoundUsers("");
+                      setName(user);
+                    }}
+                  >
+                    <span className="user-name">{user}</span>
+                  </li>
+                ))}
+              </div>
+            </OutsideClickHandler>
+          ) : null}
+      </div>
         </div>
 
         <div className="middle-eighty">

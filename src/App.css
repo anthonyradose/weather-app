@@ -57,7 +57,16 @@ html, body, #root{
   height: 10%;
   background-color: red;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.top-ten-top, .top-ten-bottom{
+  height: 50%;
+  width: 100%;
+}
+.top-ten-top{
+  display: flex;
   justify-content: space-around;
   align-items: center;
 }
@@ -135,10 +144,9 @@ html, body, #root{
   background-color: blue;
 }
 .user-list{
-  height: 500px;
+  max-height: 500px;
   background: white;
   overflow: auto;
-  margin-top: 500px;
   padding: 3%;
   z-index: 100;
 }
@@ -181,4 +189,8 @@ html, body, #root{
 }
 .jimbo-span{
   font-size: 13px
+}
+
+div > .user-list{
+  z-index: 100
 }
