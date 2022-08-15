@@ -13,6 +13,8 @@ function App() {
   const [time, setTime] = useState("");
   const [foundCities, setFoundCities] = useState("");
   const [icon, setIcon] = useState("");
+  const [day, setDay] = useState([]);
+  // const [date, setDate] = useState("");
   // const [show, setShow] = useState(true);
 
   // GET ALL THE CITIES OF THE WORLD:
@@ -20,7 +22,6 @@ function App() {
     const res = await axios.get(
       "https://countriesnow.space/api/v0.1/countries"
     );
-    console.log(res)
     const countriesArr = res.data.data;
     const citiesArr = countriesArr.map((Arr) => Arr.cities);
     const citiesAll = citiesArr.flat();
@@ -49,7 +50,12 @@ function App() {
   // GET CURRENT LOCATION:
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    res.data.city === null ? setCity(res.data.IPv4) : setCity(res.data.city);
+    const res2 =
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes
+    `);
+    res.data.city === null
+      ? setCity(res2.data.location.region)
+      : setCity(res.data.city);
   };
   useEffect(() => {
     getData();
@@ -60,6 +66,7 @@ function App() {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
+    // console.log(res);
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
@@ -72,6 +79,40 @@ function App() {
   useEffect(() => {
     if (city !== "" && city !== " " && city !== null && city !== undefined)
       getCurr();
+  });
+
+  // GET FUTURE FORECAST:
+
+  const getFut = async () => {
+    const res = await axios.get(
+      `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${city}&days=5&aqi=no&alerts=no`
+    );
+    console.log(res)
+  
+    const himbo = res.data.forecast.forecastday;
+    const jimbo = himbo.map((day) => (
+      <div className="five-day-weather">
+        <div>
+          <span>{day.date}</span>
+        </div>
+        <div>
+          <img
+            alt="JIMBO"
+            className="jimbo"
+            src={day.day.condition.icon}
+          ></img>
+        </div>
+        <div>
+          <span className="jimbo-span">{day.day.mintemp_c}</span>
+          <span className="jimbo-span">{day.day.maxtemp_c}</span>
+        </div>
+      </div>
+    ));
+
+    return setDay(jimbo);
+  };
+  useEffect(() => {
+    getFut();
   });
 
   const handleClick = async (event) => {
@@ -93,46 +134,46 @@ function App() {
       <div className="thirty">
         <div className="top-ten">
           <div className="top-ten-top">
-          <input
-            type="search"
-            id="site-search"
-            name="q"
-            value={name}
-            onChange={filter}
-            onClick={filter}
-            placeholder="Search for cities"
-          />
-    <FontAwesomeIcon
-            className="crosshair"
-            icon={faLocationCrosshairs}
-            onClick={getData}
-          />
+            <input
+              type="search"
+              id="site-search"
+              name="q"
+              value={name}
+              onChange={filter}
+              onClick={filter}
+              placeholder="Search for cities"
+            />
+            <FontAwesomeIcon
+              className="crosshair"
+              icon={faLocationCrosshairs}
+              onClick={getData}
+            />
           </div>
           <div className="top-ten-bottom">
-          {foundUsers && foundUsers.length > 0 ? (
-            <OutsideClickHandler
-              className="JAMES"
-              onOutsideClick={() => {
-                setFoundUsers("");
-              }}
-            >
-              <div className="user-list">
-                {foundUsers.map((user) => (
-                  <li
-                    className="user"
-                    onClick={() => {
-                      handleClick(user);
-                      setFoundUsers("");
-                      setName(user);
-                    }}
-                  >
-                    <span className="user-name">{user}</span>
-                  </li>
-                ))}
-              </div>
-            </OutsideClickHandler>
-          ) : null}
-      </div>
+            {foundUsers && foundUsers.length > 0 ? (
+              <OutsideClickHandler
+                className="JAMES"
+                onOutsideClick={() => {
+                  setFoundUsers("");
+                }}
+              >
+                <div className="user-list">
+                  {foundUsers.map((user) => (
+                    <li
+                      className="user"
+                      onClick={() => {
+                        handleClick(user);
+                        setFoundUsers("");
+                        setName(user);
+                      }}
+                    >
+                      <span className="user-name">{user}</span>
+                    </li>
+                  ))}
+                </div>
+              </OutsideClickHandler>
+            ) : null}
+          </div>
         </div>
 
         <div className="middle-eighty">
@@ -161,94 +202,13 @@ function App() {
       </div>
 
       <div className="seventy">
-        {/* <div className="forty">
+        <div className="forty">
           <div className="seventy-top-twenty">
             <div className="temp-div">
               <span>Celsius</span> <span>Farenheit</span>
             </div>
           </div>
-          <div className="seventy-eighty">
-            <div className="five-day-weather">
-              <div>
-                <span>Day/Date</span>
-              </div>
-              <div>
-                <img
-                  alt="JIMBO"
-                  className="jimbo"
-                  src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80"
-                ></img>
-              </div>
-              <div>
-                <span className="jimbo-span">Celsius</span>
-                <span className="jimbo-span">Farenheit</span>
-              </div>
-            </div>
-            <div className="five-day-weather">
-              <div>
-                <span>Day/Date</span>
-              </div>
-              <div>
-                <img
-                  alt="JIMBO"
-                  className="jimbo"
-                  src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80"
-                ></img>
-              </div>
-              <div>
-                <span className="jimbo-span">Celsius</span>
-                <span className="jimbo-span">Farenheit</span>
-              </div>
-            </div>
-            <div className="five-day-weather">
-              <div>
-                <span>Day/Date</span>
-              </div>
-              <div>
-                <img
-                  alt="JIMBO"
-                  className="jimbo"
-                  src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80"
-                ></img>
-              </div>
-              <div>
-                <span className="jimbo-span">Celsius</span>
-                <span className="jimbo-span">Farenheit</span>
-              </div>
-            </div>
-            <div className="five-day-weather">
-              <div>
-                <span>Day/Date</span>
-              </div>
-              <div>
-                <img
-                  alt="JIMBO"
-                  className="jimbo"
-                  src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80"
-                ></img>
-              </div>
-              <div>
-                <span className="jimbo-span">Celsius</span>
-                <span className="jimbo-span">Farenheit</span>
-              </div>
-            </div>
-            <div className="five-day-weather">
-              <div>
-                <span>Day/Date</span>
-              </div>
-              <div>
-                <img
-                  alt="JIMBO"
-                  className="jimbo"
-                  src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80"
-                ></img>
-              </div>
-              <div>
-                <span className="jimbo-span">Celsius</span>
-                <span className="jimbo-span">Farenheit</span>
-              </div>
-            </div>
-          </div>
+          <div className="seventy-eighty">{day}</div>
         </div>
         <div className="sixty">
           <div className="sixty-top-ten">
@@ -287,7 +247,7 @@ function App() {
           <div className="sixty-bottom-thirty">
             <h4>Created by Chris Kasatka blah blah blah</h4>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
