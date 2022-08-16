@@ -16,6 +16,10 @@ function App() {
   const [day, setDay] = useState([]);
   // const [date, setDate] = useState("");
   // const [show, setShow] = useState(true);
+  const [wind, setWind] = useState("")
+  const [humidity, setHumidity] = useState("")
+  const [visibility, setVisibility] = useState("")
+  const [air, setAir] = useState("")
 
   // GET ALL THE CITIES OF THE WORLD:
   const getCities = async () => {
@@ -75,6 +79,10 @@ function App() {
     const today = date.toString().slice(0, 10);
     setTime(today);
     setIcon(res.data.current.condition.icon);
+    setWind(res.data.current.wind_mph)
+    setHumidity(res.data.current.humidity)
+    setVisibility(res.data.current.vis_miles)
+    setAir(res.data.current.pressure_mb)
   };
   useEffect(() => {
     if (city !== "" && city !== " " && city !== null && city !== undefined)
@@ -87,8 +95,8 @@ function App() {
     const res = await axios.get(
       `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${city}&days=5&aqi=no&alerts=no`
     );
-    console.log(res)
-  
+    console.log(res);
+
     const himbo = res.data.forecast.forecastday;
     const jimbo = himbo.map((day) => (
       <div className="five-day-weather">
@@ -96,11 +104,7 @@ function App() {
           <span>{day.date}</span>
         </div>
         <div>
-          <img
-            alt="JIMBO"
-            className="jimbo"
-            src={day.day.condition.icon}
-          ></img>
+          <img alt="JIMBO" className="jimbo" src={day.day.condition.icon}></img>
         </div>
         <div>
           <span className="jimbo-span">{day.day.mintemp_c}</span>
@@ -219,27 +223,27 @@ function App() {
             <div className="today-div">
               <div>
                 <h4 className="today-h4">Wind Status</h4>{" "}
-                <p className="today-p"></p>
+                <p className="today-p">{wind}mph</p>
                 <div className="today-wind"></div>
               </div>
             </div>
             <div className="today-div">
               <div>
                 <h4 className="today-h4">Humidity</h4>{" "}
-                <p className="today-p"></p>
+                <p className="today-p">{humidity}%</p>
                 <div className="today-range"></div>
               </div>
             </div>
             <div className="today-div">
               <div>
                 <h4 className="today-h4">Visibility</h4>{" "}
-                <p className="today-p"></p>
+                <p className="today-p">{visibility}miles</p>
               </div>
             </div>
             <div className="today-div">
               <div>
                 <h4 className="today-h4">Air Pressure</h4>{" "}
-                <p className="today-p"></p>
+                <p className="today-p">{air}mb</p>
               </div>
             </div>
           </div>
