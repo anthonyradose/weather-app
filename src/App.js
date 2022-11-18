@@ -2,8 +2,12 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLocationCrosshairs,
+  faLocationDot,
+  faLongArrowAltDown,
+} from "@fortawesome/free-solid-svg-icons";
+
 import OutsideClickHandler from "react-outside-click-handler";
 
 function App() {
@@ -16,10 +20,11 @@ function App() {
   const [day, setDay] = useState([]);
   // const [date, setDate] = useState("");
   // const [show, setShow] = useState(true);
-  const [wind, setWind] = useState("")
-  const [humidity, setHumidity] = useState("")
-  const [visibility, setVisibility] = useState("")
-  const [air, setAir] = useState("")
+  const [wind, setWind] = useState("");
+  const [humidity, setHumidity] = useState("");
+  const [visibility, setVisibility] = useState("");
+  const [air, setAir] = useState("");
+  const [direction, setDirection] = useState("");
 
   // GET ALL THE CITIES OF THE WORLD:
   const getCities = async () => {
@@ -79,10 +84,11 @@ function App() {
     const today = date.toString().slice(0, 10);
     setTime(today);
     setIcon(res.data.current.condition.icon);
-    setWind(res.data.current.wind_mph)
-    setHumidity(res.data.current.humidity)
-    setVisibility(res.data.current.vis_miles)
-    setAir(res.data.current.pressure_mb)
+    setWind(res.data.current.wind_mph);
+    setHumidity(res.data.current.humidity);
+    setVisibility(res.data.current.vis_miles);
+    setAir(res.data.current.pressure_mb);
+    setDirection(res.data.current.wind_dir);
   };
   useEffect(() => {
     if (city !== "" && city !== " " && city !== null && city !== undefined)
@@ -95,7 +101,7 @@ function App() {
     const res = await axios.get(
       `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${city}&days=5&aqi=no&alerts=no`
     );
-    console.log(res);
+    // console.log(res);
 
     const himbo = res.data.forecast.forecastday;
     const jimbo = himbo.map((day) => (
@@ -137,7 +143,7 @@ function App() {
     <div className="App">
       <div className="thirty">
         <div className="top-ten">
-          <div className="top-ten-top">
+       
             <input
               type="search"
               id="site-search"
@@ -152,8 +158,21 @@ function App() {
               icon={faLocationCrosshairs}
               onClick={getData}
             />
+            
+       
+     
+        </div>
+
+        <div className="middle-eighty">
+          <div className="weather-img-div">
+            <img className="weather-img" src={icon} alt="jimmy" />
           </div>
-          <div className="top-ten-bottom">
+          <div className="weather-temp-div">
+            <h1 className="weather-temp">{temp}&#8451;</h1>
+          </div>
+          <div className="weather-clim-div">
+            <h3 className="weather-clim">{condition}</h3>
+          </div>
             {foundUsers && foundUsers.length > 0 ? (
               <OutsideClickHandler
                 className="JAMES"
@@ -177,19 +196,6 @@ function App() {
                 </div>
               </OutsideClickHandler>
             ) : null}
-          </div>
-        </div>
-
-        <div className="middle-eighty">
-          <div className="weather-img-div">
-            <img className="weather-img" src={icon} alt="jimmy" />
-          </div>
-          <div className="weather-temp-div">
-            <h1 className="weather-temp">{temp}&#8451;</h1>
-          </div>
-          <div className="weather-clim-div">
-            <h3 className="weather-clim">{condition}</h3>
-          </div>
         </div>
         <div className="bottom-ten">
           <div className="bottom-ten-span-div">
@@ -224,7 +230,15 @@ function App() {
               <div>
                 <h4 className="today-h4">Wind Status</h4>{" "}
                 <p className="today-p">{wind}mph</p>
-                <div className="today-wind"></div>
+                <div className="today-wind">
+                  {direction}
+                  {{ direction } === "NW" || { direction } === "NNW" ? (
+                    <FontAwesomeIcon icon={faLocationDot} />
+                  ) : null}
+                  {direction === "SSE" ? (
+                    <FontAwesomeIcon icon={faLongArrowAltDown} />
+                  ) : null}
+                </div>
               </div>
             </div>
             <div className="today-div">
