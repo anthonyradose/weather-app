@@ -6,6 +6,7 @@ import {
   faLocationCrosshairs,
   faLocationDot,
   faLongArrowAltDown,
+
 } from "@fortawesome/free-solid-svg-icons";
 
 import OutsideClickHandler from "react-outside-click-handler";
@@ -151,6 +152,7 @@ function App() {
               value={name}
               onChange={filter}
               onClick={filter}
+              className="fa"
               placeholder="Search for cities"
             />
             <FontAwesomeIcon
