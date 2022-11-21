@@ -265,7 +265,7 @@ function App() {
           </div>
 
           <div className="sixty-bottom-thirty">
-            <h4>Created by Chris Kasatka blah blah blah</h4>
+            <h4>Created by Anthony Radose</h4>
           </div>
         </div>
       </div>
