@@ -1,4 +1,5 @@
 import "./App.css";
+import {formatDate} from "./utils"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import OutsideClickHandler from "react-outside-click-handler";
+
 
 function App() {
   const [city, setCity] = useState("");
@@ -80,9 +82,8 @@ function App() {
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
-    const str = tim;
-    const date = new Date(str);
-    const today = date.toString().slice(0, 10);
+ 
+    const today = formatDate(tim)
     setTime(today);
     setIcon(res.data.current.condition.icon);
     setWind(res.data.current.wind_mph);
@@ -102,13 +103,20 @@ function App() {
     const res = await axios.get(
       `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${city}&days=5&aqi=no&alerts=no`
     );
-    // console.log(res);
 
-    const himbo = res.data.forecast.forecastday;
-    const jimbo = himbo.map((day) => (
+    const forecastArr = res.data.forecast.forecastday;
+
+
+    const forecastObj = forecastArr.map((day) => {
+      const forecastDate = day.date;
+ 
+      const dateStr = formatDate(forecastDate)
+
+
+      return(
       <div className="five-day-weather">
         <div>
-          <span>{day.date}</span>
+          <span>{dateStr}</span>
         </div>
         <div>
           <img alt="JIMBO" className="jimbo" src={day.day.condition.icon}></img>
@@ -118,9 +126,12 @@ function App() {
           <span className="jimbo-span">{day.day.maxtemp_c}</span>
         </div>
       </div>
-    ));
+ 
+      )
+     } );
 
-    return setDay(jimbo);
+
+    return setDay(forecastObj);
   };
   useEffect(() => {
     getFut();
