@@ -1,5 +1,5 @@
 import "./App.css";
-import {formatDate} from "./utils"
+import { formatDate } from "./utils";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,11 +7,15 @@ import {
   faLocationCrosshairs,
   faLocationDot,
   faLongArrowAltDown,
-
 } from "@fortawesome/free-solid-svg-icons";
 
 import OutsideClickHandler from "react-outside-click-handler";
-
+import PercentageBar from "./PercentageBar";
+// const testData = [
+//   { bgcolor: "#6a1b9a", completed: 60 },
+//   { bgcolor: "#00695c", completed: 30 },
+//   { bgcolor: "#ef6c00", completed: 53 },
+// ];
 
 function App() {
   const [city, setCity] = useState("");
@@ -78,12 +82,11 @@ function App() {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
-    // console.log(res);
+
     setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
- 
-    const today = formatDate(tim)
+    const today = formatDate(tim);
     setTime(today);
     setIcon(res.data.current.condition.icon);
     setWind(res.data.current.wind_mph);
@@ -98,7 +101,6 @@ function App() {
   });
 
   // GET FUTURE FORECAST:
-
   const getFut = async () => {
     const res = await axios.get(
       `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${city}&days=5&aqi=no&alerts=no`
@@ -106,30 +108,30 @@ function App() {
 
     const forecastArr = res.data.forecast.forecastday;
 
-
     const forecastObj = forecastArr.map((day) => {
       const forecastDate = day.date;
- 
-      const dateStr = formatDate(forecastDate)
 
+      const dateStr = formatDate(forecastDate);
 
-      return(
-      <div className="five-day-weather">
-        <div>
-          <span>{dateStr}</span>
+      return (
+        <div className="five-day-weather">
+          <div>
+            <span>{dateStr === time ? "Today" : dateStr}</span>
+          </div>
+          <div>
+            <img
+              alt="JIMBO"
+              className="jimbo"
+              src={day.day.condition.icon}
+            ></img>
+          </div>
+          <div>
+            <span className="jimbo-span">{day.day.mintemp_c}&#8451;</span>
+            <span className="jimbo-span">{day.day.maxtemp_c}&#8451;</span>
+          </div>
         </div>
-        <div>
-          <img alt="JIMBO" className="jimbo" src={day.day.condition.icon}></img>
-        </div>
-        <div>
-          <span className="jimbo-span">{day.day.mintemp_c}</span>
-          <span className="jimbo-span">{day.day.maxtemp_c}</span>
-        </div>
-      </div>
- 
-      )
-     } );
-
+      );
+    });
 
     return setDay(forecastObj);
   };
@@ -155,25 +157,21 @@ function App() {
     <div className="App">
       <div className="thirty">
         <div className="top-ten">
-       
-            <input
-              type="search"
-              id="site-search"
-              name="q"
-              value={name}
-              onChange={filter}
-              onClick={filter}
-              className="fa"
-              placeholder="Search for cities"
-            />
-            <FontAwesomeIcon
-              className="crosshair"
-              icon={faLocationCrosshairs}
-              onClick={getData}
-            />
-            
-       
-     
+          <input
+            type="search"
+            id="site-search"
+            name="q"
+            value={name}
+            onChange={filter}
+            onClick={filter}
+            className="fa"
+            placeholder="Search for cities"
+          />
+          <FontAwesomeIcon
+            className="crosshair"
+            icon={faLocationCrosshairs}
+            onClick={getData}
+          />
         </div>
 
         <div className="middle-eighty">
@@ -186,29 +184,29 @@ function App() {
           <div className="weather-clim-div">
             <h3 className="weather-clim">{condition}</h3>
           </div>
-            {foundUsers && foundUsers.length > 0 ? (
-              <OutsideClickHandler
-                className="JAMES"
-                onOutsideClick={() => {
-                  setFoundUsers("");
-                }}
-              >
-                <div className="user-list">
-                  {foundUsers.map((user) => (
-                    <li
-                      className="user"
-                      onClick={() => {
-                        handleClick(user);
-                        setFoundUsers("");
-                        setName(user);
-                      }}
-                    >
-                      <span className="user-name">{user}</span>
-                    </li>
-                  ))}
-                </div>
-              </OutsideClickHandler>
-            ) : null}
+          {foundUsers && foundUsers.length > 0 ? (
+            <OutsideClickHandler
+              className="JAMES"
+              onOutsideClick={() => {
+                setFoundUsers("");
+              }}
+            >
+              <div className="user-list">
+                {foundUsers.map((user) => (
+                  <li
+                    className="user"
+                    onClick={() => {
+                      handleClick(user);
+                      setFoundUsers("");
+                      setName(user);
+                    }}
+                  >
+                    <span className="user-name">{user}</span>
+                  </li>
+                ))}
+              </div>
+            </OutsideClickHandler>
+          ) : null}
         </div>
         <div className="bottom-ten">
           <div className="bottom-ten-span-div">
@@ -258,7 +256,9 @@ function App() {
               <div>
                 <h4 className="today-h4">Humidity</h4>{" "}
                 <p className="today-p">{humidity}%</p>
-                <div className="today-range"></div>
+                <div className="today-range">
+                  <PercentageBar bgcolor="yellow" completed={humidity} />
+                </div>
               </div>
             </div>
             <div className="today-div">
