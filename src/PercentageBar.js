@@ -1,5 +1,4 @@
-import React
- from "react";
+import React from "react";
 const PercentageBar = (props) => {
   const { bgcolor, completed } = props;
 
@@ -8,7 +7,6 @@ const PercentageBar = (props) => {
     width: "80%",
     backgroundColor: "#e0e0de",
     borderRadius: 50,
-
   };
 
   const fillerStyles = {
@@ -19,13 +17,9 @@ const PercentageBar = (props) => {
     textAlign: "right",
   };
 
-
-
   return (
     <div style={containerStyles}>
-      <div style={fillerStyles}>
-
-      </div>
+      <div style={fillerStyles}></div>
     </div>
   );
 };

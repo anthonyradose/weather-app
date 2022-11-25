@@ -1,21 +1,15 @@
 import "./App.css";
-import { formatDate } from "./utils";
+import { formatDate, windDirection } from "./utils";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationCrosshairs,
   faLocationDot,
-  faLongArrowAltDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 import OutsideClickHandler from "react-outside-click-handler";
 import PercentageBar from "./PercentageBar";
-// const testData = [
-//   { bgcolor: "#6a1b9a", completed: 60 },
-//   { bgcolor: "#00695c", completed: 30 },
-//   { bgcolor: "#ef6c00", completed: 53 },
-// ];
 
 function App() {
   const [city, setCity] = useState("");
@@ -64,11 +58,12 @@ function App() {
   };
 
   // GET CURRENT LOCATION:
-  const getData = async () => {
+  const getData = async (e) => {
     const res = await axios.get("https://geolocation-db.com/json/");
     const res2 =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes
     `);
+    setName("");
     res.data.city === null
       ? setCity(res2.data.location.region)
       : setCity(res.data.city);
@@ -242,13 +237,8 @@ function App() {
                 <h4 className="today-h4">Wind Status</h4>{" "}
                 <p className="today-p">{wind}mph</p>
                 <div className="today-wind">
+                  {windDirection(direction)}
                   {direction}
-                  {{ direction } === "NW" || { direction } === "NNW" ? (
-                    <FontAwesomeIcon icon={faLocationDot} />
-                  ) : null}
-                  {direction === "SSE" ? (
-                    <FontAwesomeIcon icon={faLongArrowAltDown} />
-                  ) : null}
                 </div>
               </div>
             </div>
