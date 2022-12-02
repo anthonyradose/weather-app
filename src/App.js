@@ -19,8 +19,6 @@ function App() {
   const [foundCities, setFoundCities] = useState("");
   const [icon, setIcon] = useState("");
   const [day, setDay] = useState([]);
-  // const [date, setDate] = useState("");
-  // const [show, setShow] = useState(true);
   const [wind, setWind] = useState("");
   const [humidity, setHumidity] = useState("");
   const [visibility, setVisibility] = useState("");
@@ -83,7 +81,13 @@ function App() {
     const tim = res.data.location.localtime.slice(0, 10);
     const today = formatDate(tim);
     setTime(today);
-    setIcon(res.data.current.condition.icon);
+    // setIcon(res.data.current.condition.icon);
+    setIcon(
+      `http://cdn.weatherapi.com/weather/128x128/day/${res.data.current.condition.icon.slice(
+        39,
+        42
+      )}.png`
+    );
     setWind(res.data.current.wind_mph);
     setHumidity(res.data.current.humidity);
     setVisibility(res.data.current.vis_miles);
@@ -117,7 +121,10 @@ function App() {
             <img
               alt="JIMBO"
               className="jimbo"
-              src={day.day.condition.icon}
+              src={`http://cdn.weatherapi.com/weather/128x128/day/${day.day.condition.icon.slice(
+                39,
+                42
+              )}.png`}
             ></img>
           </div>
           <div>
