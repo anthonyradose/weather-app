@@ -147,7 +147,7 @@ function App() {
           <div>
             <span className="jimbo-span">{temp.charAt(temp.length -1) === 'C' ? day.day.mintemp_c : day.day.mintemp_f}&#8451;</span>
             <span className="jimbo-span">{temp.charAt(temp.length -1) === 'C' ? day.day.maxtemp_c : day.day.maxtemp_f}&#8451;</span>
-          </div>
+          </div> 
         </div>
       );
     });
