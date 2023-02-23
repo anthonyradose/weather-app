@@ -52,9 +52,3 @@ export const windDirection = (direction) => {
   return windDirections[direction];
 };
 
-export const conditionFunc = (conditionObj) => {
-  const Obj = Array.from(conditionObj)
-Obj.forEach( condition =>
-      `https://cdn.weatherapi.com/weather/128x128/day/${condition}.png`)
-  
-};

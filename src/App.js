@@ -58,6 +58,7 @@ function App() {
   // GET CURRENT LOCATION:
   const getData = async (e) => {
     const res = await axios.get("https://geolocation-db.com/json/");
+
     const res2 =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes
     `);
@@ -65,7 +66,10 @@ function App() {
     res.data.city === null
       ? setCity(res2.data.location.region)
       : setCity(res.data.city);
+
+    setTemp(`${res2.data.current.temp_c}  \u00B0C`);
   };
+
   useEffect(() => {
     getData();
   }, []);
@@ -76,18 +80,30 @@ function App() {
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
     `);
 
-    setTemp(res.data.current.temp_c);
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
+
     const today = formatDate(tim);
     setTime(today);
-    // setIcon(res.data.current.condition.icon);
-    setIcon(
-      `http://cdn.weatherapi.com/weather/128x128/day/${res.data.current.condition.icon.slice(
-        39,
-        42
-      )}.png`
-    );
+
+    // Whether to show day condition icon or night icon
+    //     is_day:	1 = Yes, 0 = No
+
+    res.data.current.is_day === 1
+      ? setIcon(
+          `http://cdn.weatherapi.com/weather/128x128/day/${res.data.current.condition.icon.slice(
+            39,
+            42
+          )}.png`
+        )
+      : setIcon(
+          `http://cdn.weatherapi.com/weather/128x128/night/${res.data.current.condition.icon.slice(
+            41,
+            44
+          )}.png`
+        );
+
+    // setIcon(res.data.current.condition.icon)
     setWind(res.data.current.wind_mph);
     setHumidity(res.data.current.humidity);
     setVisibility(res.data.current.vis_miles);
@@ -112,6 +128,7 @@ function App() {
 
       const dateStr = formatDate(forecastDate);
 
+
       return (
         <div className="five-day-weather">
           <div>
@@ -128,8 +145,8 @@ function App() {
             ></img>
           </div>
           <div>
-            <span className="jimbo-span">{day.day.mintemp_c}&#8451;</span>
-            <span className="jimbo-span">{day.day.maxtemp_c}&#8451;</span>
+            <span className="jimbo-span">{temp.charAt(temp.length -1) === 'C' ? day.day.mintemp_c : day.day.mintemp_f}&#8451;</span>
+            <span className="jimbo-span">{temp.charAt(temp.length -1) === 'C' ? day.day.maxtemp_c : day.day.maxtemp_f}&#8451;</span>
           </div>
         </div>
       );
@@ -137,6 +154,7 @@ function App() {
 
     return setDay(forecastObj);
   };
+
   useEffect(() => {
     getFut();
   });
@@ -145,14 +163,26 @@ function App() {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${event}&aqi=no
 `);
-    setTemp(res.data.current.temp_c);
+    setTemp(`${res.data.current.temp_c} \u00B0C`);
+
     setCondition(res.data.current.condition.text);
     const tim = res.data.location.localtime.slice(0, 10);
-    const str = tim;
-    const date = new Date(str);
-    const today = date.toString().slice(0, 10);
+    const today = formatDate(tim);
     setTime(today);
     setCity(res.data.location.name);
+  };
+
+  const clickHandler1 = async () => {
+    const res =
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
+`);
+    setTemp(`${res.data.current.temp_c}  \u00B0C`);
+  };
+  const clickHandler2 = async () => {
+    const res =
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
+`);
+    setTemp(`${res.data.current.temp_f}  \u2109`);
   };
 
   return (
@@ -181,7 +211,7 @@ function App() {
             <img className="weather-img" src={icon} alt="jimmy" />
           </div>
           <div className="weather-temp-div">
-            <h1 className="weather-temp">{temp}&#8451;</h1>
+            <h1 className="weather-temp">{temp}</h1>
           </div>
           <div className="weather-clim-div">
             <h3 className="weather-clim">{condition}</h3>
@@ -228,7 +258,8 @@ function App() {
         <div className="forty">
           <div className="seventy-top-twenty">
             <div className="temp-div">
-              <span>Celsius</span> <span>Farenheit</span>
+              <span onClick={clickHandler1}>C</span>{" "}
+              <span onClick={clickHandler2}>F</span>
             </div>
           </div>
           <div className="seventy-eighty">{day}</div>
