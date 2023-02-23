@@ -151,7 +151,7 @@ function App() {
         </div>
       );
     });
-    // BLAH
+    // BLAH BLAH
 
     return setDay(forecastObj);
   };
