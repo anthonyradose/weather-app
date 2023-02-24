@@ -128,7 +128,6 @@ function App() {
 
       const dateStr = formatDate(forecastDate);
 
-
       return (
         <div className="five-day-weather">
           <div>
@@ -145,13 +144,20 @@ function App() {
             ></img>
           </div>
           <div>
-            <span className="jimbo-span">{temp.charAt(temp.length -1) === 'C' ? day.day.mintemp_c : day.day.mintemp_f}&#8451;</span>
-            <span className="jimbo-span">{temp.charAt(temp.length -1) === 'C' ? day.day.maxtemp_c : day.day.maxtemp_f}&#8451;</span> 
-          </div> 
+            <span className="jimbo-span">
+              {temp.charAt(temp.length - 1) === "C"
+                ? `${day.day.mintemp_c} \u00B0C`
+                : `${day.day.mintemp_f} \u2109`}
+            </span>
+            <span className="jimbo-span">
+              {temp.charAt(temp.length - 1) === "C"
+                ? `${day.day.maxtemp_c} \u00B0C`
+                : `${day.day.maxtemp_f} \u2109`}
+            </span>
+          </div>
         </div>
       );
     });
-
 
     return setDay(forecastObj);
   };
