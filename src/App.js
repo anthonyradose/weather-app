@@ -144,12 +144,12 @@ function App() {
             ></img>
           </div>
           <div>
-            <span className="jimbo-span">
+            <span className="jimbo-span min">
               {temp.charAt(temp.length - 1) === "C"
                 ? `${day.day.mintemp_c} \u00B0C`
                 : `${day.day.mintemp_f} \u2109`}
             </span>
-            <span className="jimbo-span">
+            <span className="jimbo-span max">
               {temp.charAt(temp.length - 1) === "C"
                 ? `${day.day.maxtemp_c} \u00B0C`
                 : `${day.day.maxtemp_f} \u2109`}
@@ -265,8 +265,8 @@ function App() {
         <div className="forty">
           <div className="seventy-top-twenty">
             <div className="temp-div">
-              <span onClick={clickHandler1}>C</span>{" "}
-              <span onClick={clickHandler2}>F</span>
+              <button onClick={clickHandler1} className="unit-change-buttons">°C</button>
+              <button onClick={clickHandler2} className="unit-change-buttons">°F</button>
             </div>
           </div>
           <div className="seventy-eighty">{day}</div>
@@ -279,7 +279,7 @@ function App() {
           <div className="sixty-middle-seventy">
             <div className="today-div">
               <div>
-                <h4 className="today-h4">Wind Status</h4>{" "}
+                <h4 className="today-h4">Wind Status</h4>
                 <p className="today-p">{wind}mph</p>
                 <div className="today-wind">
                   {windDirection(direction)}
@@ -289,7 +289,7 @@ function App() {
             </div>
             <div className="today-div">
               <div>
-                <h4 className="today-h4">Humidity</h4>{" "}
+                <h4 className="today-h4">Humidity</h4>
                 <p className="today-p">{humidity}%</p>
                 <div className="today-range">
                   <PercentageBar bgcolor="yellow" completed={humidity} />
@@ -298,13 +298,13 @@ function App() {
             </div>
             <div className="today-div">
               <div>
-                <h4 className="today-h4">Visibility</h4>{" "}
+                <h4 className="today-h4">Visibility</h4>
                 <p className="today-p">{visibility}miles</p>
               </div>
             </div>
             <div className="today-div">
               <div>
-                <h4 className="today-h4">Air Pressure</h4>{" "}
+                <h4 className="today-h4">Air Pressure</h4>
                 <p className="today-p">{air}mb</p>
               </div>
             </div>

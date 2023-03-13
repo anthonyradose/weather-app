@@ -128,7 +128,8 @@ body,
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 32px;
+  padding-right: 3%;
+  align-items: flex-end;
 }
 .seventy-eighty {
   height: 80%;
@@ -289,4 +290,26 @@ div > .user-list {
     border: #24142c;
     padding: 3%;
     border-radius: 50%;
+}
+
+.unit-change-buttons{
+  border-radius: 50%;
+  padding: 5%;
+  margin: 2%;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.unit-change-buttons:hover{
+  background-color: grey;
+}
+.temp-div{
+  display: flex;
+  flex-direction: row;
+  width: 25%;
+  justify-content: flex-end;
+  margin-right: 4%;
+}
+.min{
+  color: #BEC3C6;
 }
