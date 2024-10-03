@@ -69,7 +69,6 @@ function App() {
 
     setTemp(`${res2.data.current.temp_c}  \u00B0C`);
   };
-
   useEffect(() => {
     getData();
   }, []);
@@ -129,14 +128,14 @@ function App() {
       const dateStr = formatDate(forecastDate);
 
       return (
-        <div className="five-day-weather">
+        <div className="forecast-card">
           <div>
             <span>{dateStr === time ? "Today" : dateStr}</span>
           </div>
           <div>
             <img
-              alt="JIMBO"
-              className="jimbo"
+              alt="Weather Icon"
+              className="forecast-icon"
               src={`http://cdn.weatherapi.com/weather/128x128/day/${day.day.condition.icon.slice(
                 39,
                 42
@@ -144,12 +143,12 @@ function App() {
             ></img>
           </div>
           <div>
-            <span className="jimbo-span min">
+            <span className="forecase-temp min">
               {temp.charAt(temp.length - 1) === "C"
                 ? `${day.day.mintemp_c} \u00B0C`
                 : `${day.day.mintemp_f} \u2109`}
             </span>
-            <span className="jimbo-span max">
+            <span className="forecast-temp max">
               {temp.charAt(temp.length - 1) === "C"
                 ? `${day.day.maxtemp_c} \u00B0C`
                 : `${day.day.maxtemp_f} \u2109`}
@@ -161,7 +160,6 @@ function App() {
 
     return setDay(forecastObj);
   };
-
   useEffect(() => {
     getFut();
   });
@@ -180,10 +178,13 @@ function App() {
   };
 
   const clickHandler1 = async () => {
-    const res =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
+    const res = await axios.get("https://geolocation-db.com/json/");
+    const res2 =
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no
 `);
-    setTemp(`${res.data.current.temp_c}  \u00B0C`);
+
+
+    setTemp(`${res2.data.current.temp_c}  \u00B0C`);
   };
   const clickHandler2 = async () => {
     const res =
@@ -193,9 +194,9 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="thirty">
-        <div className="top-ten">
+    <div className="app-container">
+      <div className="search-container">
+        <div className="search-bar">
           <input
             type="search"
             id="site-search"
@@ -203,114 +204,110 @@ function App() {
             value={name}
             onChange={filter}
             onClick={filter}
-            className="fa"
+            className="search-input"
             placeholder="Search for cities"
           />
           <FontAwesomeIcon
-            className="crosshair"
+            className="search-icon"
             icon={faLocationCrosshairs}
             onClick={getData}
           />
         </div>
 
-        <div className="middle-eighty">
-          <div className="weather-img-div">
-            <img className="weather-img" src={icon} alt="jimmy" />
+        <div className="weather-info">
+          <div className="weather-icon-container">
+            <img className="weather-icon" src={icon} alt="Weather Icon" />
           </div>
-          <div className="weather-temp-div">
-            <h1 className="weather-temp">{temp}</h1>
+          <div className="weather-temperature">
+            <h1 className="temperature-text">{temp}</h1>
           </div>
-          <div className="weather-clim-div">
-            <h3 className="weather-clim">{condition}</h3>
+          <div className="weather-condition">
+            <h3 className="condition-text">{condition}</h3>
           </div>
           {foundUsers && foundUsers.length > 0 ? (
             <OutsideClickHandler
-              className="JAMES"
+              className="search-results"
               onOutsideClick={() => {
                 setFoundUsers("");
               }}
             >
-              <div className="user-list">
+              <div className="city-list">
                 {foundUsers.map((user) => (
                   <li
-                    className="user"
+                    className="city-item"
                     onClick={() => {
                       handleClick(user);
-                      setFoundUsers("");
+                      setFoundUsers([]);
                       setName(user);
                     }}
                   >
-                    <span className="user-name">{user}</span>
+                    <span className="city-name">{user}</span>
                   </li>
                 ))}
               </div>
             </OutsideClickHandler>
           ) : null}
         </div>
-        <div className="bottom-ten">
-          <div className="bottom-ten-span-div">
-            <span className="day">Today</span>
+        <div className="current-day-info">
+          <div className="day-date">
+            <span className="day-name">Today</span>
             <span className="date">{time}</span>
           </div>
-          <div className="location-div">
+          <div className="location-info">
             <span>
               <FontAwesomeIcon icon={faLocationDot} />
             </span>
-            <span className="location-span">{city}</span>
+            <span className="location-name">{city}</span>
           </div>
         </div>
       </div>
 
-      <div className="seventy">
-        <div className="forty">
-          <div className="seventy-top-twenty">
-            <div className="temp-div">
-              <button onClick={clickHandler1} className="unit-change-buttons">°C</button>
-              <button onClick={clickHandler2} className="unit-change-buttons">°F</button>
-            </div>
-          </div>
-          <div className="seventy-eighty">{day}</div>
+      <div className="forecast-container">
+        <div className="unit-toggle">
+              <button onClick={clickHandler1} className="unit-button">°C</button>
+              <button onClick={clickHandler2} className="unit-button">°F</button>
         </div>
-        <div className="sixty">
-          <div className="sixty-top-ten">
-            <h3 className="today-h3">Today's Highlights</h3>
+        <div className="forecast-list">{day}</div>
+        <div className="highlights-container">
+          <div className="highlights-header">
+            <h3 className="highlights-title">Today's Highlights</h3>
           </div>
 
-          <div className="sixty-middle-seventy">
-            <div className="today-div">
+          <div className="highlights-body">
+            <div className="highlight-card">
               <div>
-                <h4 className="today-h4">Wind Status</h4>
-                <p className="today-p">{wind}mph</p>
-                <div className="today-wind">
+                <h4 className="highlight-title">Wind Status</h4>
+                <p className="highlight-value">{wind}mph</p>
+                <div className="wind-direction">
                   {windDirection(direction)}
                   {direction}
                 </div>
               </div>
             </div>
-            <div className="today-div">
+            <div className="highlight-card">
               <div>
-                <h4 className="today-h4">Humidity</h4>
-                <p className="today-p">{humidity}%</p>
-                <div className="today-range">
+                <h4 className="highlight-title">Humidity</h4>
+                <p className="highlight-value">{humidity}%</p>
+                <div className="humidity-bar">
                   <PercentageBar bgcolor="yellow" completed={humidity} />
                 </div>
               </div>
             </div>
-            <div className="today-div">
+            <div className="highlight-card">
               <div>
-                <h4 className="today-h4">Visibility</h4>
-                <p className="today-p">{visibility}miles</p>
+                <h4 className="highlight-title">Visibility</h4>
+                <p className="highlight-valuee">{visibility}miles</p>
               </div>
             </div>
-            <div className="today-div">
+            <div className="highlight-card">
               <div>
-                <h4 className="today-h4">Air Pressure</h4>
-                <p className="today-p">{air}mb</p>
+                <h4 className="highlight-title">Air Pressure</h4>
+                <p className="highlight-value">{air}mb</p>
               </div>
             </div>
           </div>
 
-          <div className="sixty-bottom-thirty">
+          <div className="highlights-footer">
             <h4>Created by Anthony Radose</h4>
           </div>
         </div>

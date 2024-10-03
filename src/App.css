@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
 
 html,
 body,
@@ -7,59 +7,27 @@ body,
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
-
+  font-family: "Roboto", sans-serif;
+  outline: 1px solid red;
 }
-.App {
+.app-container {
   text-align: center;
   display: flex;
   width: 100%;
   height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.thirty {
+.search-container {
   width: 30%;
   height: 100%;
   background-color: navy;
   display: flex;
   flex-direction: column;
 }
-.top-ten {
+.search-bar {
   height: 10%;
   background-color: #3e3b51;
   display: flex;
@@ -73,24 +41,17 @@ body,
   width: 70%;
   padding-left: 3%;
 }
-/* #root > div > div.thirty > div.top-ten > div.top-ten-top > svg{
-  height: 60%;
-  width: 20%;
-} */
-#root > div > div.thirty > div.top-ten > svg {
-  font-size: 1.5em;
-  width: 10%;
-  color: white;
-}
-.middle-eighty {
+
+
+.weather-info {
   height: 70%;
   background-color: #3e3b51;
-  color: white;;
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.bottom-ten {
+.current-day-info {
   height: 20%;
   display: flex;
   background-color: #3e3b51;
@@ -98,9 +59,9 @@ body,
   justify-content: center;
   flex-direction: column;
 }
-.weather-img-div,
-.weather-temp-div,
-.weather-clim-div {
+.weather-icon-container,
+.weather-temperature,
+.weather-condition {
   height: 30%;
   display: flex;
   align-items: center;
@@ -110,18 +71,15 @@ body,
   height: 200px;
   width: 200px;
 }
-.seventy {
+.forecast-container {
   width: 70%;
   height: 100%;
   background-color: skyblue;
   display: flex;
   flex-direction: column;
 }
-.forty {
-  height: 40%;
-  background-color: #24142c;
-}
-.seventy-top-twenty {
+
+.unit-toggle {
   height: 20%;
   background-color: #24142c;
   color: white;
@@ -131,7 +89,7 @@ body,
   padding-right: 3%;
   align-items: flex-end;
 }
-.seventy-eighty {
+.forecast-list {
   height: 80%;
   background-color: #24142c;
   color: white;
@@ -141,14 +99,14 @@ body,
   padding-left: 3%;
   padding-right: 3%;
 }
-.sixty {
+.highlights-container {
   height: 60%;
   display: flex;
   /* background-color: aquamarine; */
   background-color: #24142c;
   flex-direction: column;
 }
-.sixty-top-ten {
+.highlights-header {
   height: 15%;
   background-color: #24142c;
   text-align: center;
@@ -156,7 +114,7 @@ body,
   margin-left: 7%;
   margin-right: 7%;
 }
-.sixty-middle-seventy {
+.highlights-body {
   height: 70%;
   display: flex;
   flex-wrap: wrap;
@@ -165,17 +123,13 @@ body,
   padding-left: 2%;
   padding-right: 2%;
 }
-.sixty-bottom-thirty {
+.highlights-footer {
   height: 15%;
   background-color: #24142c;
   color: white;
 }
-#root > div > div.thirty > div.top-ten > div.top-ten-bottom > div {
-  width: 90%;
-  display: flex;
-  justify-content: center;
-}
-.user-list {
+
+.city-list {
   background: #3e3b51;
   overflow: auto;
   border-collapse: inherit;
@@ -191,8 +145,7 @@ body,
   flex-direction: column;
 }
 
-
-.user {
+.city-item {
   cursor: pointer;
   padding: 5% 0 5% 3%;
   width: 80%;
@@ -200,13 +153,13 @@ body,
   display: flex;
   margin: 5% 7%;
 }
-.user:hover{
+.city-item:hover {
   border: 1px solid white;
 }
-.crosshair {
+.search-icon {
   cursor: pointer;
 }
-.five-day-weather {
+.forecast-card {
   width: 15%;
   height: 75%;
   background-color: #3e3b51;
@@ -215,13 +168,13 @@ body,
   justify-content: space-evenly;
   align-items: center;
 }
-.today-div {
+.highlight-card {
   width: 40%;
   height: 40%;
   background-color: #3e3b51;
   color: white;
 }
-.today-div > div{
+.highlight-card > div {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -229,70 +182,66 @@ body,
   justify-content: space-evenly;
   align-items: center;
 }
-.today-range{
+.humidity-bar {
   width: 100%;
   display: flex;
   justify-content: center;
 }
-.today-range > div{
+.humidity-bar > div {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 80%;
   justify-content: space-evenly;
 }
-.today-h4, .today-p{
+.highlight-title,
+.highligh-value {
   margin: unset;
 }
 
-.bottom-ten-span-div {
+.day-date {
   height: 50%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
-.location-div {
+.location-info {
   height: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.jimbo {
+.forecast-icon {
   height: 100px;
   width: 100px;
 }
-.jimbo-span {
+.forecast-temp {
   font-size: 13px;
 }
 
-.five-day-weather > div:nth-child(3){
-  width: 80%;
-  display: flex;
-  justify-content: space-between;
-}
 
-div > .user-list {
+div > .city-list {
   z-index: 100;
 }
 
-.today-wind{
+.wind-direction {
   display: flex;
   width: 30%;
   align-items: center;
   justify-content: space-evenly;
 }
 
-.today-wind > svg{
+.wind-direction > svg {
   transform-origin: 0.4375em 0.5em;
-    background: white;
-    color: #24142c;
-    border: #24142c;
-    padding: 3%;
-    border-radius: 50%;
+  background: white;
+  color: #24142c;
+  border: #24142c;
+  padding: 3%;
+  border-radius: 50%;
 }
 
-.unit-change-buttons{
+.unit-change-buttons {
   border-radius: 50%;
   padding: 5%;
   margin: 2%;
@@ -300,16 +249,6 @@ div > .user-list {
   cursor: pointer;
   font-weight: bold;
 }
-.unit-change-buttons:hover{
+.unit-change-buttons:hover {
   background-color: grey;
-}
-.temp-div{
-  display: flex;
-  flex-direction: row;
-  width: 25%;
-  justify-content: flex-end;
-  margin-right: 4%;
-}
-.min{
-  color: #BEC3C6;
 }
