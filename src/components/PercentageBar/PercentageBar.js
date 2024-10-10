@@ -1,4 +1,6 @@
 import React from "react";
+import "./PercentageBar.css";
+
 const PercentageBar = (props) => {
   const { bgcolor, completed } = props;
 

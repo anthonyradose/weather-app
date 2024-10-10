@@ -1,0 +1,45 @@
+.weather-info {
+    height: 70%;
+    background-color: #3e3b51;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .current-day-info {
+    height: 20%;
+    display: flex;
+    background-color: #3e3b51;
+    color: white;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .weather-icon-container,
+  .weather-temperature,
+  .weather-condition {
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .weather-img {
+    height: 200px;
+    width: 200px;
+  }
+  
+  .day-date {
+    height: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  .location-info {
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
