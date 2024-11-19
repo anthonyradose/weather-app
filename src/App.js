@@ -9,93 +9,93 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import OutsideClickHandler from "react-outside-click-handler";
-import PercentageBar from "./PercentageBar";
+import PercentageBar from "./components/PercentageBar";
 
 function App() {
-  const [city, setCity] = useState("");
-  const [temp, setTemp] = useState("");
-  const [condition, setCondition] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [temperature, setTemperature] = useState("");
+  const [weatherCondition, setWeatherCondition] = useState("");
   const [time, setTime] = useState("");
-  const [foundCities, setFoundCities] = useState("");
-  const [icon, setIcon] = useState("");
-  const [day, setDay] = useState([]);
-  const [wind, setWind] = useState("");
+  const [allCities, setAllCities] = useState("");
+  const [weatherIcon, setWeatherIcon] = useState("");
+  const [forecastDays, setForecastDays] = useState([]);
+  const [windSpeed, setWindSpeed] = useState("");
   const [humidity, setHumidity] = useState("");
   const [visibility, setVisibility] = useState("");
-  const [air, setAir] = useState("");
+  const [airPressure, setAirPressure] = useState("");
   const [direction, setDirection] = useState("");
 
   // GET ALL THE CITIES OF THE WORLD:
-  const getCities = async () => {
+  const fetchCities = async () => {
     const res = await axios.get(
       "https://countriesnow.space/api/v0.1/countries"
     );
     const countriesArr = res.data.data;
     const citiesArr = countriesArr.map((Arr) => Arr.cities);
     const citiesAll = citiesArr.flat();
-    setFoundCities(citiesAll);
+    setAllCities(citiesAll);
   };
   useEffect(() => {
-    getCities();
+    fetchCities();
   }, []);
-  const [name, setName] = useState("");
+  const [searchedCity, setSearchedCity] = useState("");
   // the search result
-  const [foundUsers, setFoundUsers] = useState("");
+  const [filteredCities, setFilteredCities] = useState("");
   const filter = (e) => {
     const keyword = e.target.value;
     if (keyword !== "") {
-      const results = foundCities.filter((user) => {
-        return user.toLowerCase().startsWith(keyword.toLowerCase());
+      const results = allCities.filter((city) => {
+        return city.toLowerCase().startsWith(keyword.toLowerCase());
         // Use the toLowerCase() method to make it case-insensitive
       });
-      setFoundUsers(results);
+      setFilteredCities(results);
     } else {
-      setFoundUsers("");
+      setFilteredCities("");
     }
-    setName(keyword);
+    setSearchedCity(keyword);
   };
 
   // GET CURRENT LOCATION:
-  const getData = async (e) => {
+  const getLocationData = async (e) => {
     const res = await axios.get("https://geolocation-db.com/json/");
 
     const res2 =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes
     `);
-    setName("");
+    setSearchedCity("");
     res.data.city === null
-      ? setCity(res2.data.location.region)
-      : setCity(res.data.city);
+      ? setCityName(res2.data.location.region)
+      : setCityName(res.data.city);
 
-    setTemp(`${res2.data.current.temp_c}  \u00B0C`);
+    setTemperature(`${res2.data.current.temp_c}  \u00B0C`);
   };
   useEffect(() => {
-    getData();
+    getLocationData();
   }, []);
-
+    
   // GET CURRENT LOCATION INFO:
-  const getCurr = async () => {
+  const fetchCurrentWeather = async () => {
     const res =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no
     `);
 
-    setCondition(res.data.current.condition.text);
-    const tim = res.data.location.localtime.slice(0, 10);
+    setWeatherCondition(res.data.current.condition.text);
+    const localTime = res.data.location.localtime.slice(0, 10);
 
-    const today = formatDate(tim);
+    const today = formatDate(localTime);
     setTime(today);
 
     // Whether to show day condition icon or night icon
     //     is_day:	1 = Yes, 0 = No
 
     res.data.current.is_day === 1
-      ? setIcon(
+      ? setWeatherIcon(
           `http://cdn.weatherapi.com/weather/128x128/day/${res.data.current.condition.icon.slice(
             39,
             42
           )}.png`
         )
-      : setIcon(
+      : setWeatherIcon(
           `http://cdn.weatherapi.com/weather/128x128/night/${res.data.current.condition.icon.slice(
             41,
             44
@@ -103,26 +103,26 @@ function App() {
         );
 
     // setIcon(res.data.current.condition.icon)
-    setWind(res.data.current.wind_mph);
+    setWindSpeed(res.data.current.wind_mph);
     setHumidity(res.data.current.humidity);
     setVisibility(res.data.current.vis_miles);
-    setAir(res.data.current.pressure_mb);
+    setAirPressure(res.data.current.pressure_mb);
     setDirection(res.data.current.wind_dir);
   };
   useEffect(() => {
-    if (city !== "" && city !== " " && city !== null && city !== undefined)
-      getCurr();
+    if (cityName !== "" && cityName !== " " && cityName !== null && cityName !== undefined)
+      fetchCurrentWeather();
   });
 
   // GET FUTURE FORECAST:
-  const getFut = async () => {
+  const fetchForecastData = async () => {
     const res = await axios.get(
-      `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${city}&days=5&aqi=no&alerts=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&days=5&aqi=no&alerts=no`
     );
 
     const forecastArr = res.data.forecast.forecastday;
 
-    const forecastObj = forecastArr.map((day) => {
+    const forecastMappd = forecastArr.map((day) => {
       const forecastDate = day.date;
 
       const dateStr = formatDate(forecastDate);
@@ -143,13 +143,13 @@ function App() {
             ></img>
           </div>
           <div>
-            <span className="forecase-temp min">
-              {temp.charAt(temp.length - 1) === "C"
+            <span className="forecast-temp min">
+              {temperature.charAt(temperature.length - 1) === "C"
                 ? `${day.day.mintemp_c} \u00B0C`
                 : `${day.day.mintemp_f} \u2109`}
             </span>
             <span className="forecast-temp max">
-              {temp.charAt(temp.length - 1) === "C"
+              {temperature.charAt(temperature.length - 1) === "C"
                 ? `${day.day.maxtemp_c} \u00B0C`
                 : `${day.day.maxtemp_f} \u2109`}
             </span>
@@ -157,24 +157,23 @@ function App() {
         </div>
       );
     });
-
-    return setDay(forecastObj);
+    return setForecastDays(forecastMappd);
   };
   useEffect(() => {
-    getFut();
+    fetchForecastData();
   });
 
   const handleClick = async (event) => {
     const res =
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${event}&aqi=no
 `);
-    setTemp(`${res.data.current.temp_c} \u00B0C`);
+    setTemperature(`${res.data.current.temp_c} \u00B0C`);
 
-    setCondition(res.data.current.condition.text);
-    const tim = res.data.location.localtime.slice(0, 10);
-    const today = formatDate(tim);
+    setWeatherCondition(res.data.current.condition.text);
+    const localTime = res.data.location.localtime.slice(0, 10);
+    const today = formatDate(localTime);
     setTime(today);
-    setCity(res.data.location.name);
+    setCityName(res.data.location.name);
   };
 
   const clickHandler1 = async () => {
@@ -183,65 +182,64 @@ function App() {
       await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no
 `);
 
-
-    setTemp(`${res2.data.current.temp_c}  \u00B0C`);
+    setTemperature(`${res2.data.current.temp_c}  \u00B0C`);
   };
   const clickHandler2 = async () => {
     const res =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no
+      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no
 `);
-    setTemp(`${res.data.current.temp_f}  \u2109`);
+    setTemperature(`${res.data.current.temp_f}  \u2109`);
   };
 
   return (
-    <div className="app-container">
+    <div className="app">
       <div className="search-container">
-        <div className="search-bar">
+        <div className="search-input-container">
           <input
             type="search"
             id="site-search"
             name="q"
-            value={name}
+            value={searchedCity}
             onChange={filter}
             onClick={filter}
             className="search-input"
             placeholder="Search for cities"
           />
           <FontAwesomeIcon
-            className="search-icon"
+            className="location-search-icon"
             icon={faLocationCrosshairs}
-            onClick={getData}
+            onClick={getLocationData}
           />
         </div>
 
         <div className="weather-info">
           <div className="weather-icon-container">
-            <img className="weather-icon" src={icon} alt="Weather Icon" />
+            <img className="weather-icon" src={weatherIcon} alt="Weather Icon" />
           </div>
-          <div className="weather-temperature">
-            <h1 className="temperature-text">{temp}</h1>
+          <div className="temperature-display">
+            <h1 className="temperature-text">{temperature}</h1>
           </div>
-          <div className="weather-condition">
-            <h3 className="condition-text">{condition}</h3>
+          <div className="condition-display">
+            <h3 className="condition-text">{weatherCondition}</h3>
           </div>
-          {foundUsers && foundUsers.length > 0 ? (
+          {filteredCities && filteredCities.length > 0 ? (
             <OutsideClickHandler
               className="search-results"
               onOutsideClick={() => {
-                setFoundUsers("");
+                setFilteredCities("");
               }}
             >
               <div className="city-list">
-                {foundUsers.map((user) => (
+                {filteredCities.map((city) => (
                   <li
                     className="city-item"
                     onClick={() => {
-                      handleClick(user);
-                      setFoundUsers([]);
-                      setName(user);
+                      handleClick(city);
+                      setFilteredCities([]);
+                      setSearchedCity(city);
                     }}
                   >
-                    <span className="city-name">{user}</span>
+                    <span className="city-name">{city}</span>
                   </li>
                 ))}
               </div>
@@ -257,19 +255,23 @@ function App() {
             <span>
               <FontAwesomeIcon icon={faLocationDot} />
             </span>
-            <span className="location-name">{city}</span>
+            <span className="location-name">{cityName}</span>
           </div>
         </div>
       </div>
 
-      <div className="forecast-container">
-        <div className="unit-toggle">
-              <button onClick={clickHandler1} className="unit-button">°C</button>
-              <button onClick={clickHandler2} className="unit-button">°F</button>
+      <div className="forecast-section">
+        <div className="unit-toggle-container">
+          <button onClick={clickHandler1} className="unit-toggle-button">
+            °C
+          </button>
+          <button onClick={clickHandler2} className="unit-toggle-button">
+            °F
+          </button>
         </div>
-        <div className="forecast-list">{day}</div>
-        <div className="highlights-container">
-          <div className="highlights-header">
+        <div className="forecast-container">{forecastDays}</div>
+        <div className="weather-highlights">
+          <div className="highlights-title-container">
             <h3 className="highlights-title">Today's Highlights</h3>
           </div>
 
@@ -277,8 +279,8 @@ function App() {
             <div className="highlight-card">
               <div>
                 <h4 className="highlight-title">Wind Status</h4>
-                <p className="highlight-value">{wind}mph</p>
-                <div className="wind-direction">
+                <p className="highlight-value">{windSpeed}mph</p>
+                <div className="wind-compass">
                   {windDirection(direction)}
                   {direction}
                 </div>
@@ -296,18 +298,18 @@ function App() {
             <div className="highlight-card">
               <div>
                 <h4 className="highlight-title">Visibility</h4>
-                <p className="highlight-valuee">{visibility}miles</p>
+                <p className="highlight-value">{visibility}miles</p>
               </div>
             </div>
             <div className="highlight-card">
               <div>
                 <h4 className="highlight-title">Air Pressure</h4>
-                <p className="highlight-value">{air}mb</p>
+                <p className="highlight-value">{airPressure}mb</p>
               </div>
             </div>
           </div>
 
-          <div className="highlights-footer">
+          <div className="credits-section">
             <h4>Created by Anthony Radose</h4>
           </div>
         </div>
