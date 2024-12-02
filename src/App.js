@@ -1,5 +1,5 @@
 import "./App.css";
-import { formatDate, windDirection } from "./utils";
+import { formatDate, windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,20 +10,26 @@ import {
 
 import OutsideClickHandler from "react-outside-click-handler";
 import PercentageBar from "./components/PercentageBar";
+import useCurrentWeather from "./hooks/useCurrentWeather";
 
 function App() {
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
-  const [weatherCondition, setWeatherCondition] = useState("");
-  const [time, setTime] = useState("");
   const [allCities, setAllCities] = useState("");
-  const [weatherIcon, setWeatherIcon] = useState("");
   const [forecastDays, setForecastDays] = useState([]);
-  const [windSpeed, setWindSpeed] = useState("");
-  const [humidity, setHumidity] = useState("");
-  const [visibility, setVisibility] = useState("");
-  const [airPressure, setAirPressure] = useState("");
-  const [direction, setDirection] = useState("");
+
+  const {
+    weatherCondition,
+    time,
+    weatherIcon,
+    windSpeed,
+    humidity,
+    visibility,
+    airPressure,
+    direction,
+    setWeatherCondition,
+    setTime,
+  } = useCurrentWeather(cityName);
 
   // GET ALL THE CITIES OF THE WORLD:
   const fetchCities = async () => {
@@ -38,15 +44,14 @@ function App() {
   useEffect(() => {
     fetchCities();
   }, []);
+
   const [searchedCity, setSearchedCity] = useState("");
-  // the search result
   const [filteredCities, setFilteredCities] = useState("");
   const filter = (e) => {
     const keyword = e.target.value;
     if (keyword !== "") {
       const results = allCities.filter((city) => {
         return city.toLowerCase().startsWith(keyword.toLowerCase());
-        // Use the toLowerCase() method to make it case-insensitive
       });
       setFilteredCities(results);
     } else {
@@ -58,10 +63,9 @@ function App() {
   // GET CURRENT LOCATION:
   const getLocationData = async (e) => {
     const res = await axios.get("https://geolocation-db.com/json/");
-
-    const res2 =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes
-    `);
+    const res2 = await axios.get(
+      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes`
+    );
     setSearchedCity("");
     res.data.city === null
       ? setCityName(res2.data.location.region)
@@ -72,47 +76,6 @@ function App() {
   useEffect(() => {
     getLocationData();
   }, []);
-    
-  // GET CURRENT LOCATION INFO:
-  const fetchCurrentWeather = async () => {
-    const res =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no
-    `);
-
-    setWeatherCondition(res.data.current.condition.text);
-    const localTime = res.data.location.localtime.slice(0, 10);
-
-    const today = formatDate(localTime);
-    setTime(today);
-
-    // Whether to show day condition icon or night icon
-    //     is_day:	1 = Yes, 0 = No
-
-    res.data.current.is_day === 1
-      ? setWeatherIcon(
-          `http://cdn.weatherapi.com/weather/128x128/day/${res.data.current.condition.icon.slice(
-            39,
-            42
-          )}.png`
-        )
-      : setWeatherIcon(
-          `http://cdn.weatherapi.com/weather/128x128/night/${res.data.current.condition.icon.slice(
-            41,
-            44
-          )}.png`
-        );
-
-    // setIcon(res.data.current.condition.icon)
-    setWindSpeed(res.data.current.wind_mph);
-    setHumidity(res.data.current.humidity);
-    setVisibility(res.data.current.vis_miles);
-    setAirPressure(res.data.current.pressure_mb);
-    setDirection(res.data.current.wind_dir);
-  };
-  useEffect(() => {
-    if (cityName !== "" && cityName !== " " && cityName !== null && cityName !== undefined)
-      fetchCurrentWeather();
-  });
 
   // GET FUTURE FORECAST:
   const fetchForecastData = async () => {
@@ -124,7 +87,6 @@ function App() {
 
     const forecastMappd = forecastArr.map((day) => {
       const forecastDate = day.date;
-
       const dateStr = formatDate(forecastDate);
 
       return (
@@ -164,11 +126,10 @@ function App() {
   });
 
   const handleClick = async (event) => {
-    const res =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${event}&aqi=no
-`);
+    const res = await axios.get(
+      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${event}&aqi=no`
+    );
     setTemperature(`${res.data.current.temp_c} \u00B0C`);
-
     setWeatherCondition(res.data.current.condition.text);
     const localTime = res.data.location.localtime.slice(0, 10);
     const today = formatDate(localTime);
@@ -178,16 +139,16 @@ function App() {
 
   const clickHandler1 = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    const res2 =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no
-`);
-
+    const res2 = await axios.get(
+      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no`
+    );
     setTemperature(`${res2.data.current.temp_c}  \u00B0C`);
   };
+
   const clickHandler2 = async () => {
-    const res =
-      await axios.get(`https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no
-`);
+    const res = await axios.get(
+      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no`
+    );
     setTemperature(`${res.data.current.temp_f}  \u2109`);
   };
 
