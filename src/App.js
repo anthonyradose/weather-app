@@ -2,6 +2,8 @@ import "./App.css";
 import { formatDate, windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { fetchCities } from "./services/citiesService";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationCrosshairs,
@@ -32,17 +34,12 @@ function App() {
   } = useCurrentWeather(cityName);
 
   // GET ALL THE CITIES OF THE WORLD:
-  const fetchCities = async () => {
-    const res = await axios.get(
-      "https://countriesnow.space/api/v0.1/countries"
-    );
-    const countriesArr = res.data.data;
-    const citiesArr = countriesArr.map((Arr) => Arr.cities);
-    const citiesAll = citiesArr.flat();
-    setAllCities(citiesAll);
-  };
   useEffect(() => {
-    fetchCities();
+    const getCities = async () => {
+      const citiesAll = await fetchCities();
+      setAllCities(citiesAll);
+    };
+    getCities();
   }, []);
 
   const [searchedCity, setSearchedCity] = useState("");
