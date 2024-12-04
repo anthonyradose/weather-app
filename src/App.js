@@ -1,5 +1,5 @@
 import "./App.css";
-import { formatDate, windDirection } from "./utils/utils";
+import { formatDate, windDirection, filterCities } from "./utils/utils";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { fetchCities } from "./services/citiesService";
@@ -44,18 +44,17 @@ function App() {
 
   const [searchedCity, setSearchedCity] = useState("");
   const [filteredCities, setFilteredCities] = useState("");
-  const filter = (e) => {
+
+
+
+  const filterCityList = (e) => {
     const keyword = e.target.value;
-    if (keyword !== "") {
-      const results = allCities.filter((city) => {
-        return city.toLowerCase().startsWith(keyword.toLowerCase());
-      });
-      setFilteredCities(results);
-    } else {
-      setFilteredCities("");
-    }
+    const results = filterCities(keyword, allCities);
+    setFilteredCities(results);
     setSearchedCity(keyword);
   };
+
+
 
   // GET CURRENT LOCATION:
   const getLocationData = async (e) => {
@@ -158,8 +157,8 @@ function App() {
             id="site-search"
             name="q"
             value={searchedCity}
-            onChange={filter}
-            onClick={filter}
+            onChange={filterCityList}
+            onClick={filterCityList}
             className="search-input"
             placeholder="Search for cities"
           />
