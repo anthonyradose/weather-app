@@ -3,6 +3,7 @@ import { formatDate, windDirection, filterCities } from "./utils/utils";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { fetchCities } from "./services/citiesService";
+import { getLocationData } from "./services/locationService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -57,21 +58,19 @@ function App() {
 
 
   // GET CURRENT LOCATION:
-  const getLocationData = async (e) => {
-    const res = await axios.get("https://geolocation-db.com/json/");
-    const res2 = await axios.get(
-      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=yes`
-    );
-    setSearchedCity("");
-    res.data.city === null
-      ? setCityName(res2.data.location.region)
-      : setCityName(res.data.city);
-
-    setTemperature(`${res2.data.current.temp_c}  \u00B0C`);
+  const fetchLocationData = async () => {
+    try {
+      const locationData = await getLocationData();
+      setCityName(locationData.cityName);
+      setTemperature(locationData.temperature);
+    } catch (error) {
+      console.error("Error fetching location data", error);
+    }
   };
   useEffect(() => {
-    getLocationData();
+    fetchLocationData();
   }, []);
+    
 
   // GET FUTURE FORECAST:
   const fetchForecastData = async () => {
@@ -165,7 +164,7 @@ function App() {
           <FontAwesomeIcon
             className="location-search-icon"
             icon={faLocationCrosshairs}
-            onClick={getLocationData}
+            onClick={fetchLocationData}
           />
         </div>
 
