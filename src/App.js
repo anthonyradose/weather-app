@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { fetchCities } from "./services/citiesService";
 import { getLocationData } from "./services/locationService";
+import { fetchForecastData } from "./services/forecastService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,6 +21,7 @@ function App() {
   const [temperature, setTemperature] = useState("");
   const [allCities, setAllCities] = useState("");
   const [forecastDays, setForecastDays] = useState([]);
+  const [temperatureUnit] = useState("C");
 
   const {
     weatherCondition,
@@ -34,7 +36,6 @@ function App() {
     setTime,
   } = useCurrentWeather(cityName);
 
-  // GET ALL THE CITIES OF THE WORLD:
   useEffect(() => {
     const getCities = async () => {
       const citiesAll = await fetchCities();
@@ -46,8 +47,6 @@ function App() {
   const [searchedCity, setSearchedCity] = useState("");
   const [filteredCities, setFilteredCities] = useState("");
 
-
-
   const filterCityList = (e) => {
     const keyword = e.target.value;
     const results = filterCities(keyword, allCities);
@@ -55,9 +54,6 @@ function App() {
     setSearchedCity(keyword);
   };
 
-
-
-  // GET CURRENT LOCATION:
   const fetchLocationData = async () => {
     try {
       const locationData = await getLocationData();
@@ -70,55 +66,23 @@ function App() {
   useEffect(() => {
     fetchLocationData();
   }, []);
-    
 
-  // GET FUTURE FORECAST:
-  const fetchForecastData = async () => {
-    const res = await axios.get(
-      `https://api.weatherapi.com/v1/forecast.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&days=5&aqi=no&alerts=no`
-    );
-
-    const forecastArr = res.data.forecast.forecastday;
-
-    const forecastMappd = forecastArr.map((day) => {
-      const forecastDate = day.date;
-      const dateStr = formatDate(forecastDate);
-
-      return (
-        <div className="forecast-card">
-          <div>
-            <span>{dateStr === time ? "Today" : dateStr}</span>
-          </div>
-          <div>
-            <img
-              alt="Weather Icon"
-              className="forecast-icon"
-              src={`http://cdn.weatherapi.com/weather/128x128/day/${day.day.condition.icon.slice(
-                39,
-                42
-              )}.png`}
-            ></img>
-          </div>
-          <div>
-            <span className="forecast-temp min">
-              {temperature.charAt(temperature.length - 1) === "C"
-                ? `${day.day.mintemp_c} \u00B0C`
-                : `${day.day.mintemp_f} \u2109`}
-            </span>
-            <span className="forecast-temp max">
-              {temperature.charAt(temperature.length - 1) === "C"
-                ? `${day.day.maxtemp_c} \u00B0C`
-                : `${day.day.maxtemp_f} \u2109`}
-            </span>
-          </div>
-        </div>
-      );
-    });
-    return setForecastDays(forecastMappd);
-  };
   useEffect(() => {
-    fetchForecastData();
-  });
+    if (cityName) {
+      const fetchForecast = async () => {
+        try {
+          const forecastData = await fetchForecastData(
+            cityName,
+            temperatureUnit
+          );
+          setForecastDays(forecastData);
+        } catch (error) {
+          console.error("Failed to fetch forecast:", error);
+        }
+      };
+      fetchForecast();
+    }
+  }, [cityName, temperatureUnit]);
 
   const handleClick = async (event) => {
     const res = await axios.get(
@@ -170,7 +134,11 @@ function App() {
 
         <div className="weather-info">
           <div className="weather-icon-container">
-            <img className="weather-icon" src={weatherIcon} alt="Weather Icon" />
+            <img
+              className="weather-icon"
+              src={weatherIcon}
+              alt="Weather Icon"
+            />
           </div>
           <div className="temperature-display">
             <h1 className="temperature-text">{temperature}</h1>
@@ -225,7 +193,30 @@ function App() {
             °F
           </button>
         </div>
-        <div className="forecast-container">{forecastDays}</div>
+        <div className="forecast-container">
+  {forecastDays.map((day, index) => (
+    <div key={index} className="forecast-card">
+      <div>
+        <span>{day.isToday ? "Today" : day.date}</span>
+      </div>
+      <div>
+        <img
+          alt="Weather Icon"
+          className="forecast-icon"
+          src={`http://cdn.weatherapi.com/weather/128x128/day/${day.icon.slice(
+            39,
+            42
+          )}.png`}
+        />
+      </div>
+      <div>
+        <span className="forecast-temp min">{`${day.minTemp}°${temperatureUnit}`}</span>
+        <span className="forecast-temp max">{`${day.maxTemp}°${temperatureUnit}`}</span>
+      </div>
+    </div>
+  ))}
+</div>
+
         <div className="weather-highlights">
           <div className="highlights-title-container">
             <h3 className="highlights-title">Today's Highlights</h3>
