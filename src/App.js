@@ -5,6 +5,7 @@ import axios from "axios";
 import { fetchCities } from "./services/citiesService";
 import { getLocationData } from "./services/locationService";
 import { fetchForecastData } from "./services/forecastService";
+import ForecastCard from "./components/ForecastCard";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -97,11 +98,15 @@ function App() {
   };
 
   const clickHandler1 = async () => {
-    const res = await axios.get("https://geolocation-db.com/json/");
-    const res2 = await axios.get(
-      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no`
+    // const res = await axios.get("https://geolocation-db.com/json/");
+    // const res2 = await axios.get(
+    //   `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no`
+    // );
+    const res = await axios.get(
+      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no`
     );
-    setTemperature(`${res2.data.current.temp_c}  \u00B0C`);
+    setTemperature(`${res.data.current.temp_c}  \u00B0C`);
+    console.log(res)
   };
 
   const clickHandler2 = async () => {
@@ -194,27 +199,9 @@ function App() {
           </button>
         </div>
         <div className="forecast-container">
-  {forecastDays.map((day, index) => (
-    <div key={index} className="forecast-card">
-      <div>
-        <span>{day.isToday ? "Today" : day.date}</span>
-      </div>
-      <div>
-        <img
-          alt="Weather Icon"
-          className="forecast-icon"
-          src={`http://cdn.weatherapi.com/weather/128x128/day/${day.icon.slice(
-            39,
-            42
-          )}.png`}
-        />
-      </div>
-      <div>
-        <span className="forecast-temp min">{`${day.minTemp}°${temperatureUnit}`}</span>
-        <span className="forecast-temp max">{`${day.maxTemp}°${temperatureUnit}`}</span>
-      </div>
-    </div>
-  ))}
+        {forecastDays.map((day, index) => (
+  <ForecastCard key={index} day={day} temperatureUnit={temperatureUnit} />
+))}
 </div>
 
         <div className="weather-highlights">
