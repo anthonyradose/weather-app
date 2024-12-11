@@ -55,7 +55,7 @@ export const windDirection = (direction) => {
 export const filterCities = (keyword, allCities) => {
   if (keyword !== "") {
     return allCities.filter((city) =>
-      city.toLowerCase().startsWith(keyword.toLowerCase())
+      city.toLowerCase().includes(keyword.toLowerCase())
     );
   }
   return [];

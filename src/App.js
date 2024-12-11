@@ -13,7 +13,7 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 
-import OutsideClickHandler from "react-outside-click-handler";
+import CityList from "./components/CityList";
 import PercentageBar from "./components/PercentageBar";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 
@@ -54,6 +54,8 @@ function App() {
     setFilteredCities(results);
     setSearchedCity(keyword);
   };
+  
+  
 
   const fetchLocationData = async () => {
     try {
@@ -85,17 +87,22 @@ function App() {
     }
   }, [cityName, temperatureUnit]);
 
-  const handleClick = async (event) => {
-    const res = await axios.get(
-      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${event}&aqi=no`
-    );
-    setTemperature(`${res.data.current.temp_c} \u00B0C`);
-    setWeatherCondition(res.data.current.condition.text);
-    const localTime = res.data.location.localtime.slice(0, 10);
-    const today = formatDate(localTime);
-    setTime(today);
-    setCityName(res.data.location.name);
+  const handleCitySelection = async (city) => {
+    try {
+      const res = await axios.get(
+        `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no`
+      );
+      setTemperature(`${res.data.current.temp_c} \u00B0C`);
+      setWeatherCondition(res.data.current.condition.text);
+      const localTime = res.data.location.localtime.slice(0, 10);
+      const today = formatDate(localTime);
+      setTime(today);
+      setCityName(res.data.location.name);
+    } catch (error) {
+      console.error("Error fetching city data", error);
+    }
   };
+  
 
   const clickHandler1 = async () => {
     // const res = await axios.get("https://geolocation-db.com/json/");
@@ -151,29 +158,15 @@ function App() {
           <div className="condition-display">
             <h3 className="condition-text">{weatherCondition}</h3>
           </div>
-          {filteredCities && filteredCities.length > 0 ? (
-            <OutsideClickHandler
-              className="search-results"
-              onOutsideClick={() => {
-                setFilteredCities("");
-              }}
-            >
-              <div className="city-list">
-                {filteredCities.map((city) => (
-                  <li
-                    className="city-item"
-                    onClick={() => {
-                      handleClick(city);
-                      setFilteredCities([]);
-                      setSearchedCity(city);
-                    }}
-                  >
-                    <span className="city-name">{city}</span>
-                  </li>
-                ))}
-              </div>
-            </OutsideClickHandler>
-          ) : null}
+          <CityList
+  filteredCities={filteredCities}
+  handleCityClick={(city) => {
+    handleCitySelection(city);
+    setFilteredCities([]);
+    setSearchedCity(city);
+  }}
+  clearFilteredCities={() => setFilteredCities("")}
+/>
         </div>
         <div className="current-day-info">
           <div className="day-date">
