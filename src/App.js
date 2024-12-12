@@ -8,10 +8,8 @@ import { fetchForecastData } from "./services/forecastService";
 import ForecastCard from "./components/ForecastCard";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLocationCrosshairs,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import SearchBar from "./components/SearchBar";
 
 import CityList from "./components/CityList";
 import PercentageBar from "./components/PercentageBar";
@@ -54,8 +52,6 @@ function App() {
     setFilteredCities(results);
     setSearchedCity(keyword);
   };
-  
-  
 
   const fetchLocationData = async () => {
     try {
@@ -102,7 +98,6 @@ function App() {
       console.error("Error fetching city data", error);
     }
   };
-  
 
   const clickHandler1 = async () => {
     // const res = await axios.get("https://geolocation-db.com/json/");
@@ -113,7 +108,7 @@ function App() {
       `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no`
     );
     setTemperature(`${res.data.current.temp_c}  \u00B0C`);
-    console.log(res)
+    console.log(res);
   };
 
   const clickHandler2 = async () => {
@@ -126,23 +121,11 @@ function App() {
   return (
     <div className="app">
       <div className="search-container">
-        <div className="search-input-container">
-          <input
-            type="search"
-            id="site-search"
-            name="q"
-            value={searchedCity}
-            onChange={filterCityList}
-            onClick={filterCityList}
-            className="search-input"
-            placeholder="Search for cities"
-          />
-          <FontAwesomeIcon
-            className="location-search-icon"
-            icon={faLocationCrosshairs}
-            onClick={fetchLocationData}
-          />
-        </div>
+        <SearchBar
+          searchedCity={searchedCity}
+          filterCityList={filterCityList}
+          fetchLocationData={fetchLocationData}
+        />
 
         <div className="weather-info">
           <div className="weather-icon-container">
@@ -159,14 +142,14 @@ function App() {
             <h3 className="condition-text">{weatherCondition}</h3>
           </div>
           <CityList
-  filteredCities={filteredCities}
-  handleCityClick={(city) => {
-    handleCitySelection(city);
-    setFilteredCities([]);
-    setSearchedCity(city);
-  }}
-  clearFilteredCities={() => setFilteredCities("")}
-/>
+            filteredCities={filteredCities}
+            handleCityClick={(city) => {
+              handleCitySelection(city);
+              setFilteredCities([]);
+              setSearchedCity(city);
+            }}
+            clearFilteredCities={() => setFilteredCities("")}
+          />
         </div>
         <div className="current-day-info">
           <div className="day-date">
@@ -192,10 +175,14 @@ function App() {
           </button>
         </div>
         <div className="forecast-container">
-        {forecastDays.map((day, index) => (
-  <ForecastCard key={index} day={day} temperatureUnit={temperatureUnit} />
-))}
-</div>
+          {forecastDays.map((day, index) => (
+            <ForecastCard
+              key={index}
+              day={day}
+              temperatureUnit={temperatureUnit}
+            />
+          ))}
+        </div>
 
         <div className="weather-highlights">
           <div className="highlights-title-container">
