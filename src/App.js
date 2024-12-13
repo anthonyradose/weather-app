@@ -14,6 +14,7 @@ import SearchBar from "./components/SearchBar";
 import CityList from "./components/CityList";
 import PercentageBar from "./components/PercentageBar";
 import useCurrentWeather from "./hooks/useCurrentWeather";
+import CurrentWeather from "./components/CurrentWeather";
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -127,30 +128,20 @@ function App() {
           fetchLocationData={fetchLocationData}
         />
 
-        <div className="weather-info">
-          <div className="weather-icon-container">
-            <img
-              className="weather-icon"
-              src={weatherIcon}
-              alt="Weather Icon"
-            />
-          </div>
-          <div className="temperature-display">
-            <h1 className="temperature-text">{temperature}</h1>
-          </div>
-          <div className="condition-display">
-            <h3 className="condition-text">{weatherCondition}</h3>
-          </div>
-          <CityList
-            filteredCities={filteredCities}
-            handleCityClick={(city) => {
-              handleCitySelection(city);
-              setFilteredCities([]);
-              setSearchedCity(city);
-            }}
-            clearFilteredCities={() => setFilteredCities("")}
-          />
-        </div>
+        <CurrentWeather
+          weatherIcon={weatherIcon}
+          temperature={temperature}
+          weatherCondition={weatherCondition}
+        />
+        <CityList
+          filteredCities={filteredCities}
+          handleCityClick={(city) => {
+            handleCitySelection(city);
+            setFilteredCities([]);
+            setSearchedCity(city);
+          }}
+          clearFilteredCities={() => setFilteredCities("")}
+        />
         <div className="current-day-info">
           <div className="day-date">
             <span className="day-name">Today</span>
