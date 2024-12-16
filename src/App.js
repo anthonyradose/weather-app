@@ -6,15 +6,14 @@ import { fetchCities } from "./services/citiesService";
 import { getLocationData } from "./services/locationService";
 import { fetchForecastData } from "./services/forecastService";
 import ForecastCard from "./components/ForecastCard";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./components/SearchBar";
 
 import CityList from "./components/CityList";
 import PercentageBar from "./components/PercentageBar";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
+import CurrentDayInfo from "./components/CurrentDayInfo";
+
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -142,18 +141,8 @@ function App() {
           }}
           clearFilteredCities={() => setFilteredCities("")}
         />
-        <div className="current-day-info">
-          <div className="day-date">
-            <span className="day-name">Today</span>
-            <span className="date">{time}</span>
-          </div>
-          <div className="location-info">
-            <span>
-              <FontAwesomeIcon icon={faLocationDot} />
-            </span>
-            <span className="location-name">{cityName}</span>
-          </div>
-        </div>
+          <CurrentDayInfo time={time} cityName={cityName} />
+
       </div>
 
       <div className="forecast-section">
