@@ -5,15 +5,13 @@ import axios from "axios";
 import { fetchCities } from "./services/citiesService";
 import { getLocationData } from "./services/locationService";
 import { fetchForecastData } from "./services/forecastService";
-import ForecastCard from "./components/ForecastCard";
 import SearchBar from "./components/SearchBar";
+import ForecastSection from "./components/ForecastSection";
 
 import CityList from "./components/CityList";
-import PercentageBar from "./components/PercentageBar";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
 import CurrentDayInfo from "./components/CurrentDayInfo";
-
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -141,73 +139,20 @@ function App() {
           }}
           clearFilteredCities={() => setFilteredCities("")}
         />
-          <CurrentDayInfo time={time} cityName={cityName} />
-
+        <CurrentDayInfo time={time} cityName={cityName} />
       </div>
-
-      <div className="forecast-section">
-        <div className="unit-toggle-container">
-          <button onClick={clickHandler1} className="unit-toggle-button">
-            °C
-          </button>
-          <button onClick={clickHandler2} className="unit-toggle-button">
-            °F
-          </button>
-        </div>
-        <div className="forecast-container">
-          {forecastDays.map((day, index) => (
-            <ForecastCard
-              key={index}
-              day={day}
-              temperatureUnit={temperatureUnit}
-            />
-          ))}
-        </div>
-
-        <div className="weather-highlights">
-          <div className="highlights-title-container">
-            <h3 className="highlights-title">Today's Highlights</h3>
-          </div>
-
-          <div className="highlights-body">
-            <div className="highlight-card">
-              <div>
-                <h4 className="highlight-title">Wind Status</h4>
-                <p className="highlight-value">{windSpeed}mph</p>
-                <div className="wind-compass">
-                  {windDirection(direction)}
-                  {direction}
-                </div>
-              </div>
-            </div>
-            <div className="highlight-card">
-              <div>
-                <h4 className="highlight-title">Humidity</h4>
-                <p className="highlight-value">{humidity}%</p>
-                <div className="humidity-bar">
-                  <PercentageBar bgcolor="yellow" completed={humidity} />
-                </div>
-              </div>
-            </div>
-            <div className="highlight-card">
-              <div>
-                <h4 className="highlight-title">Visibility</h4>
-                <p className="highlight-value">{visibility}miles</p>
-              </div>
-            </div>
-            <div className="highlight-card">
-              <div>
-                <h4 className="highlight-title">Air Pressure</h4>
-                <p className="highlight-value">{airPressure}mb</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="credits-section">
-            <h4>Created by Anthony Radose</h4>
-          </div>
-        </div>
-      </div>
+      <ForecastSection
+        forecastDays={forecastDays}
+        temperatureUnit={temperatureUnit}
+        windSpeed={windSpeed}
+        humidity={humidity}
+        visibility={visibility}
+        airPressure={airPressure}
+        direction={direction}
+        windDirection={windDirection}
+        clickHandler1={clickHandler1}
+        clickHandler2={clickHandler2}
+      />
     </div>
   );
 }
