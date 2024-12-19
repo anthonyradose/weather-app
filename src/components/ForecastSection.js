@@ -1,6 +1,7 @@
 import React from "react";
 import ForecastCard from "./ForecastCard";
 import PercentageBar from "./PercentageBar";
+import UnitToggle from "./UnitToggle";
 
 const ForecastSection = ({
   forecastDays,
@@ -16,14 +17,10 @@ const ForecastSection = ({
 }) => {
   return (
     <div className="forecast-section">
-      <div className="unit-toggle-container">
-        <button onClick={clickHandler1} className="unit-toggle-button">
-          °C
-        </button>
-        <button onClick={clickHandler2} className="unit-toggle-button">
-          °F
-        </button>
-      </div>
+      <UnitToggle
+        onCelsiusClick={clickHandler1}
+        onFahrenheitClick={clickHandler2}
+      />
       <div className="forecast-container">
         {forecastDays.map((day, index) => (
           <ForecastCard
