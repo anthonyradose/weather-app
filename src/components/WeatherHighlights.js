@@ -1,5 +1,6 @@
 import React from "react";
 import PercentageBar from "./PercentageBar";
+import HighlightCard from "./HighlightCard";
 
 const WeatherHighlights = ({
   windSpeed,
@@ -16,37 +17,22 @@ const WeatherHighlights = ({
       </div>
 
       <div className="highlights-body">
-        <div className="highlight-card">
-          <div>
-            <h4 className="highlight-title">Wind Status</h4>
-            <p className="highlight-value">{windSpeed}mph</p>
-            <div className="wind-compass">
-              {windDirection(direction)}
-              {direction}
-            </div>
+        <HighlightCard title="Wind Status" value={windSpeed} unit="mph">
+          <div className="wind-compass">
+            {windDirection(direction)}
+            {direction}
           </div>
-        </div>
-        <div className="highlight-card">
-          <div>
-            <h4 className="highlight-title">Humidity</h4>
-            <p className="highlight-value">{humidity}%</p>
-            <div className="humidity-bar">
-              <PercentageBar bgcolor="yellow" completed={humidity} />
-            </div>
+        </HighlightCard>
+
+        <HighlightCard title="Humidity" value={humidity} unit="%">
+          <div className="humidity-bar">
+            <PercentageBar bgcolor="yellow" completed={humidity} />
           </div>
-        </div>
-        <div className="highlight-card">
-          <div>
-            <h4 className="highlight-title">Visibility</h4>
-            <p className="highlight-value">{visibility}miles</p>
-          </div>
-        </div>
-        <div className="highlight-card">
-          <div>
-            <h4 className="highlight-title">Air Pressure</h4>
-            <p className="highlight-value">{airPressure}mb</p>
-          </div>
-        </div>
+        </HighlightCard>
+
+        <HighlightCard title="Visibility" value={visibility} unit="miles" />
+
+        <HighlightCard title="Air Pressure" value={airPressure} unit="mb" />
       </div>
 
       <div className="credits-section">
