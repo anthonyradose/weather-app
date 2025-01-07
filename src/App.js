@@ -12,6 +12,8 @@ import CityList from "./components/CityList";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
 import CurrentDayInfo from "./components/CurrentDayInfo";
+import { fetchCityWeather } from "./services/weatherService";
+
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -83,15 +85,13 @@ function App() {
 
   const handleCitySelection = async (city) => {
     try {
-      const res = await axios.get(
-        `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${city}&aqi=no`
-      );
-      setTemperature(`${res.data.current.temp_c} \u00B0C`);
-      setWeatherCondition(res.data.current.condition.text);
-      const localTime = res.data.location.localtime.slice(0, 10);
+      const res = await fetchCityWeather(city);
+      setTemperature(`${res.current.temp_c} \u00B0C`);
+      setWeatherCondition(res.current.condition.text);
+      const localTime = res.location.localtime.slice(0, 10);
       const today = formatDate(localTime);
       setTime(today);
-      setCityName(res.data.location.name);
+      setCityName(res.location.name);
     } catch (error) {
       console.error("Error fetching city data", error);
     }
