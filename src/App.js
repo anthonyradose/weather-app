@@ -1,7 +1,11 @@
 import "./App.css";
 import { formatDate, windDirection, filterCities } from "./utils/utils";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import {
+  fetchTemperatureCelsius,
+  fetchTemperatureFahrenheit,
+} from "./services/temperatureService";
+
 import { fetchCities } from "./services/citiesService";
 import { getLocationData } from "./services/locationService";
 import { fetchForecastData } from "./services/forecastService";
@@ -98,22 +102,21 @@ function App() {
   };
 
   const clickHandler1 = async () => {
-    // const res = await axios.get("https://geolocation-db.com/json/");
-    // const res2 = await axios.get(
-    //   `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${res.data.IPv4}&aqi=no`
-    // );
-    const res = await axios.get(
-      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no`
-    );
-    setTemperature(`${res.data.current.temp_c}  \u00B0C`);
-    console.log(res);
+    try {
+      const temperature = await fetchTemperatureCelsius(cityName);
+      setTemperature(temperature);
+    } catch (error) {
+      console.error("Error fetching temperature in Celsius:", error);
+    }
   };
-
+  
   const clickHandler2 = async () => {
-    const res = await axios.get(
-      `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no`
-    );
-    setTemperature(`${res.data.current.temp_f}  \u2109`);
+    try {
+      const temperature = await fetchTemperatureFahrenheit(cityName);
+      setTemperature(temperature);
+    } catch (error) {
+      console.error("Error fetching temperature in Fahrenheit:", error);
+    }
   };
 
   return (
