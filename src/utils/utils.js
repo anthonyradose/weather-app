@@ -5,14 +5,9 @@ import React from "react";
 export const formatDate = (str) => {
   const date = new Date(str);
   const options = { weekday: "long", day: "numeric", month: "long" };
-
   const dateStr = date.toLocaleDateString(undefined, options);
-
   return dateStr;
 };
-
-/*We create a const that receives an object and each of its properties.
-       will be the values corresponding to our types*/
 
 export const windDirection = (direction) => {
   const windDirections = {
@@ -60,5 +55,3 @@ export const filterCities = (keyword, allCities) => {
   }
   return [];
 };
-
-

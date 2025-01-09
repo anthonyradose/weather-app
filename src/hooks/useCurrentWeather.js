@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchCityWeather } from "../services/weatherService";
 import { formatDate } from "../utils/utils";
 
 const useCurrentWeather = (cityName) => {
@@ -13,40 +13,31 @@ const useCurrentWeather = (cityName) => {
   const [direction, setDirection] = useState("");
 
   useEffect(() => {
-    const fetchCurrentWeather = async () => {
+    const getCurrentWeather = async () => {
       if (!cityName) return;
 
-      const res = await axios.get(
-        `https://api.weatherapi.com/v1/current.json?key=e5a89a85ae524d618b391623223006&q=${cityName}&aqi=no`
-      );
+      try {
+        const data = await fetchCityWeather(cityName);
+        setWeatherCondition(data.current.condition.text);
+        const localTime = data.location.localtime.slice(0, 10);
+        setTime(formatDate(localTime));
 
-      setWeatherCondition(res.data.current.condition.text);
-      const localTime = res.data.location.localtime.slice(0, 10);
-      const today = formatDate(localTime);
-      setTime(today);
+        const iconPath = data.current.is_day === 1 
+          ? `day/${data.current.condition.icon.slice(39, 42)}`
+          : `night/${data.current.condition.icon.slice(41, 44)}`;
+        setWeatherIcon(`http://cdn.weatherapi.com/weather/128x128/${iconPath}.png`);
 
-      res.data.current.is_day === 1
-        ? setWeatherIcon(
-            `http://cdn.weatherapi.com/weather/128x128/day/${res.data.current.condition.icon.slice(
-              39,
-              42
-            )}.png`
-          )
-        : setWeatherIcon(
-            `http://cdn.weatherapi.com/weather/128x128/night/${res.data.current.condition.icon.slice(
-              41,
-              44
-            )}.png`
-          );
-
-      setWindSpeed(res.data.current.wind_mph);
-      setHumidity(res.data.current.humidity);
-      setVisibility(res.data.current.vis_miles);
-      setAirPressure(res.data.current.pressure_mb);
-      setDirection(res.data.current.wind_dir);
+        setWindSpeed(data.current.wind_mph);
+        setHumidity(data.current.humidity);
+        setVisibility(data.current.vis_miles);
+        setAirPressure(data.current.pressure_mb);
+        setDirection(data.current.wind_dir);
+      } catch (error) {
+        console.error("Error fetching current weather:", error);
+      }
     };
 
-    fetchCurrentWeather();
+    getCurrentWeather();
   }, [cityName]);
 
   return {
