@@ -55,3 +55,10 @@ export const filterCities = (keyword, allCities) => {
   }
   return [];
 };
+
+export const getWeatherIconPath = (isDay, icon) => {
+  const path = isDay
+    ? `day/${icon.slice(39, 42)}`
+    : `night/${icon.slice(41, 44)}`;
+  return `http://cdn.weatherapi.com/weather/128x128/${path}.png`;
+};

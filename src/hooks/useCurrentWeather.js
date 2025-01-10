@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchCityWeather } from "../services/weatherService";
-import { formatDate } from "../utils/utils";
+import { formatDate, getWeatherIconPath } from "../utils/utils";
 
 const useCurrentWeather = (cityName) => {
   const [weatherCondition, setWeatherCondition] = useState("");
@@ -22,10 +22,8 @@ const useCurrentWeather = (cityName) => {
         const localTime = data.location.localtime.slice(0, 10);
         setTime(formatDate(localTime));
 
-        const iconPath = data.current.is_day === 1 
-          ? `day/${data.current.condition.icon.slice(39, 42)}`
-          : `night/${data.current.condition.icon.slice(41, 44)}`;
-        setWeatherIcon(`http://cdn.weatherapi.com/weather/128x128/${iconPath}.png`);
+        setWeatherIcon(getWeatherIconPath(data.current.is_day, data.current.condition.icon));
+
 
         setWindSpeed(data.current.wind_mph);
         setHumidity(data.current.humidity);
