@@ -1,5 +1,5 @@
 import "./App.css";
-import { formatDate, windDirection, filterCities } from "./utils/utils";
+import { formatDate, windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
 import {
   fetchTemperatureCelsius,
@@ -17,6 +17,8 @@ import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
 import CurrentDayInfo from "./components/CurrentDayInfo";
 import { fetchCityWeather } from "./services/weatherService";
+import useCityFilter from "./hooks/useCityFilter";
+
 
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
     setTime,
   } = useCurrentWeather(cityName);
 
+  
+
   useEffect(() => {
     const getCities = async () => {
       const citiesAll = await fetchCities();
@@ -47,15 +51,13 @@ function App() {
     getCities();
   }, []);
 
-  const [searchedCity, setSearchedCity] = useState("");
-  const [filteredCities, setFilteredCities] = useState("");
-
-  const filterCityList = (e) => {
-    const keyword = e.target.value;
-    const results = filterCities(keyword, allCities);
-    setFilteredCities(results);
-    setSearchedCity(keyword);
-  };
+  const {
+    searchedCity,
+    filteredCities,
+    filterCityList,
+    clearFilteredCities,
+  } = useCityFilter(allCities);
+  
 
   const fetchLocationData = async () => {
     try {
@@ -122,26 +124,28 @@ function App() {
   return (
     <div className="app">
       <div className="search-container">
-        <SearchBar
-          searchedCity={searchedCity}
-          filterCityList={filterCityList}
-          fetchLocationData={fetchLocationData}
-        />
+      <SearchBar
+  searchedCity={searchedCity}
+  filterCityList={(e) => filterCityList(e.target.value)}
+  fetchLocationData={fetchLocationData}
+/>
+
 
         <CurrentWeather
           weatherIcon={weatherIcon}
           temperature={temperature}
           weatherCondition={weatherCondition}
         />
-        <CityList
-          filteredCities={filteredCities}
-          handleCityClick={(city) => {
-            handleCitySelection(city);
-            setFilteredCities([]);
-            setSearchedCity(city);
-          }}
-          clearFilteredCities={() => setFilteredCities("")}
-        />
+   <CityList
+  filteredCities={filteredCities}
+  handleCityClick={(city) => {
+    handleCitySelection(city);
+    clearFilteredCities(); 
+  }}
+  
+  clearFilteredCities={clearFilteredCities}
+/>
+
         <CurrentDayInfo time={time} cityName={cityName} />
       </div>
       <ForecastSection
