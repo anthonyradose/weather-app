@@ -21,6 +21,7 @@ function App() {
   const [forecastDays, setForecastDays] = useState([]);
   const [temperatureUnit] = useState("C");
 
+
   const {
     weatherCondition,
     time,
@@ -50,10 +51,11 @@ function App() {
   } = useCityFilter(allCities);
 
   const { fetchLocationData } = useLocationData();
-  
   useEffect(() => {
     fetchLocationData(setCityName, setTemperature);
-  }, []);
+  }, [fetchLocationData]);
+
+
 
   useEffect(() => {
     if (cityName) {
