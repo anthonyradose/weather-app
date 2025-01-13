@@ -1,25 +1,18 @@
 import "./App.css";
 import { formatDate, windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
-import {
-  fetchTemperatureCelsius,
-  fetchTemperatureFahrenheit,
-} from "./services/temperatureService";
-
+import { fetchTemperatureCelsius, fetchTemperatureFahrenheit } from "./services/temperatureService";
 import { fetchCities } from "./services/citiesService";
-import { getLocationData } from "./services/locationService";
 import { fetchForecastData } from "./services/forecastService";
 import SearchBar from "./components/SearchBar";
 import ForecastSection from "./components/ForecastSection";
-
 import CityList from "./components/CityList";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
 import CurrentDayInfo from "./components/CurrentDayInfo";
 import { fetchCityWeather } from "./services/weatherService";
 import useCityFilter from "./hooks/useCityFilter";
-
-
+import useLocationData from "./hooks/useLocationData";
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -41,8 +34,6 @@ function App() {
     setTime,
   } = useCurrentWeather(cityName);
 
-  
-
   useEffect(() => {
     const getCities = async () => {
       const citiesAll = await fetchCities();
@@ -57,29 +48,18 @@ function App() {
     filterCityList,
     clearFilteredCities,
   } = useCityFilter(allCities);
-  
 
-  const fetchLocationData = async () => {
-    try {
-      const locationData = await getLocationData();
-      setCityName(locationData.cityName);
-      setTemperature(locationData.temperature);
-    } catch (error) {
-      console.error("Error fetching location data", error);
-    }
-  };
+  const { fetchLocationData } = useLocationData();
+  
   useEffect(() => {
-    fetchLocationData();
+    fetchLocationData(setCityName, setTemperature);
   }, []);
 
   useEffect(() => {
     if (cityName) {
       const fetchForecast = async () => {
         try {
-          const forecastData = await fetchForecastData(
-            cityName,
-            temperatureUnit
-          );
+          const forecastData = await fetchForecastData(cityName, temperatureUnit);
           setForecastDays(forecastData);
         } catch (error) {
           console.error("Failed to fetch forecast:", error);
@@ -111,7 +91,7 @@ function App() {
       console.error("Error fetching temperature in Celsius:", error);
     }
   };
-  
+
   const clickHandler2 = async () => {
     try {
       const temperature = await fetchTemperatureFahrenheit(cityName);
@@ -124,28 +104,27 @@ function App() {
   return (
     <div className="app">
       <div className="search-container">
-      <SearchBar
-  searchedCity={searchedCity}
-  filterCityList={(e) => filterCityList(e.target.value)}
-  fetchLocationData={fetchLocationData}
-/>
-
+        <SearchBar
+          searchedCity={searchedCity}
+          filterCityList={(e) => filterCityList(e.target.value)}
+          fetchLocationData={fetchLocationData}
+          setCityName={setCityName}  // Passing setCityName
+          setTemperature={setTemperature}  // Passing setTemperature
+        />
 
         <CurrentWeather
           weatherIcon={weatherIcon}
           temperature={temperature}
           weatherCondition={weatherCondition}
         />
-   <CityList
-  filteredCities={filteredCities}
-  handleCityClick={(city) => {
-    handleCitySelection(city);
-    clearFilteredCities(); 
-  }}
-  
-  clearFilteredCities={clearFilteredCities}
-/>
-
+        <CityList
+          filteredCities={filteredCities}
+          handleCityClick={(city) => {
+            handleCitySelection(city);
+            clearFilteredCities();
+          }}
+          clearFilteredCities={clearFilteredCities}
+        />
         <CurrentDayInfo time={time} cityName={cityName} />
       </div>
       <ForecastSection
