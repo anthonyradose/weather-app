@@ -2,7 +2,8 @@ import "./App.css";
 import { formatDate, windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
 import { fetchTemperatureCelsius, fetchTemperatureFahrenheit } from "./services/temperatureService";
-import { fetchCities } from "./services/citiesService";
+import useCityData from "./hooks/useCityData";
+
 import { fetchForecastData } from "./services/forecastService";
 import SearchBar from "./components/SearchBar";
 import ForecastSection from "./components/ForecastSection";
@@ -17,10 +18,9 @@ import useLocationData from "./hooks/useLocationData";
 function App() {
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
-  const [allCities, setAllCities] = useState("");
   const [forecastDays, setForecastDays] = useState([]);
   const [temperatureUnit] = useState("C");
-
+  const allCities = useCityData();
 
   const {
     weatherCondition,
@@ -35,13 +35,6 @@ function App() {
     setTime,
   } = useCurrentWeather(cityName);
 
-  useEffect(() => {
-    const getCities = async () => {
-      const citiesAll = await fetchCities();
-      setAllCities(citiesAll);
-    };
-    getCities();
-  }, []);
 
   const {
     searchedCity,
