@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { fetchTemperatureCelsius, fetchTemperatureFahrenheit } from "./services/temperatureService";
 import useCityData from "./hooks/useCityData";
 
-import { fetchForecastData } from "./services/forecastService";
+
 import SearchBar from "./components/SearchBar";
 import ForecastSection from "./components/ForecastSection";
 import CityList from "./components/CityList";
@@ -14,12 +14,16 @@ import CurrentDayInfo from "./components/CurrentDayInfo";
 import { fetchCityWeather } from "./services/weatherService";
 import useCityFilter from "./hooks/useCityFilter";
 import useLocationData from "./hooks/useLocationData";
+import useForecastData from "./hooks/useForecastData"; // Import the hook
+
 
 function App() {
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
-  const [forecastDays, setForecastDays] = useState([]);
+
   const [temperatureUnit] = useState("C");
+  const { forecastDays} = useForecastData(cityName, temperatureUnit); // Use the custom hook
+
   const allCities = useCityData();
 
   const {
@@ -44,25 +48,14 @@ function App() {
   } = useCityFilter(allCities);
 
   const { fetchLocationData } = useLocationData();
+
   useEffect(() => {
     fetchLocationData(setCityName, setTemperature);
   }, [fetchLocationData]);
 
 
 
-  useEffect(() => {
-    if (cityName) {
-      const fetchForecast = async () => {
-        try {
-          const forecastData = await fetchForecastData(cityName, temperatureUnit);
-          setForecastDays(forecastData);
-        } catch (error) {
-          console.error("Failed to fetch forecast:", error);
-        }
-      };
-      fetchForecast();
-    }
-  }, [cityName, temperatureUnit]);
+
 
   const handleCitySelection = async (city) => {
     try {
