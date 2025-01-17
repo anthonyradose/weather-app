@@ -1,9 +1,12 @@
 import "./App.css";
-import { formatDate, windDirection } from "./utils/utils";
+import { windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
-import { fetchTemperatureCelsius, fetchTemperatureFahrenheit } from "./services/temperatureService";
+import {
+  fetchTemperatureCelsius,
+  fetchTemperatureFahrenheit,
+} from "./services/temperatureService";
 import useCityData from "./hooks/useCityData";
-
+import useCitySelection from "./hooks/useCitySelection";
 
 import SearchBar from "./components/SearchBar";
 import ForecastSection from "./components/ForecastSection";
@@ -11,18 +14,17 @@ import CityList from "./components/CityList";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
 import CurrentDayInfo from "./components/CurrentDayInfo";
-import { fetchCityWeather } from "./services/weatherService";
+
 import useCityFilter from "./hooks/useCityFilter";
 import useLocationData from "./hooks/useLocationData";
-import useForecastData from "./hooks/useForecastData"; // Import the hook
-
+import useForecastData from "./hooks/useForecastData";
 
 function App() {
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
 
   const [temperatureUnit] = useState("C");
-  const { forecastDays} = useForecastData(cityName, temperatureUnit); // Use the custom hook
+  const { forecastDays } = useForecastData(cityName, temperatureUnit);
 
   const allCities = useCityData();
 
@@ -39,37 +41,21 @@ function App() {
     setTime,
   } = useCurrentWeather(cityName);
 
-
-  const {
-    searchedCity,
-    filteredCities,
-    filterCityList,
-    clearFilteredCities,
-  } = useCityFilter(allCities);
+  const { searchedCity, filteredCities, filterCityList, clearFilteredCities } =
+    useCityFilter(allCities);
 
   const { fetchLocationData } = useLocationData();
+
+  const { handleCitySelection } = useCitySelection(
+    setCityName,
+    setTemperature,
+    setWeatherCondition,
+    setTime
+  );
 
   useEffect(() => {
     fetchLocationData(setCityName, setTemperature);
   }, [fetchLocationData]);
-
-
-
-
-
-  const handleCitySelection = async (city) => {
-    try {
-      const res = await fetchCityWeather(city);
-      setTemperature(`${res.current.temp_c} \u00B0C`);
-      setWeatherCondition(res.current.condition.text);
-      const localTime = res.location.localtime.slice(0, 10);
-      const today = formatDate(localTime);
-      setTime(today);
-      setCityName(res.location.name);
-    } catch (error) {
-      console.error("Error fetching city data", error);
-    }
-  };
 
   const clickHandler1 = async () => {
     try {
@@ -96,8 +82,8 @@ function App() {
           searchedCity={searchedCity}
           filterCityList={(e) => filterCityList(e.target.value)}
           fetchLocationData={fetchLocationData}
-          setCityName={setCityName}  // Passing setCityName
-          setTemperature={setTemperature}  // Passing setTemperature
+          setCityName={setCityName} // Passing setCityName
+          setTemperature={setTemperature} // Passing setTemperature
         />
 
         <CurrentWeather
