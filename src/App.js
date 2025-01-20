@@ -1,10 +1,7 @@
 import "./App.css";
 import { windDirection } from "./utils/utils";
 import React, { useState, useEffect } from "react";
-import {
-  fetchTemperatureCelsius,
-  fetchTemperatureFahrenheit,
-} from "./services/temperatureService";
+
 import useCityData from "./hooks/useCityData";
 import useCitySelection from "./hooks/useCitySelection";
 
@@ -14,6 +11,7 @@ import CityList from "./components/CityList";
 import useCurrentWeather from "./hooks/useCurrentWeather";
 import CurrentWeather from "./components/CurrentWeather";
 import CurrentDayInfo from "./components/CurrentDayInfo";
+import useTemperatureUnit from "./hooks/useTemperatureUnit";
 
 import useCityFilter from "./hooks/useCityFilter";
 import useLocationData from "./hooks/useLocationData";
@@ -22,6 +20,7 @@ import useForecastData from "./hooks/useForecastData";
 function App() {
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
+  const { fetchTemperature } = useTemperatureUnit(cityName, setTemperature);
 
   const [temperatureUnit] = useState("C");
   const { forecastDays } = useForecastData(cityName, temperatureUnit);
@@ -57,23 +56,7 @@ function App() {
     fetchLocationData(setCityName, setTemperature);
   }, [fetchLocationData]);
 
-  const clickHandler1 = async () => {
-    try {
-      const temperature = await fetchTemperatureCelsius(cityName);
-      setTemperature(temperature);
-    } catch (error) {
-      console.error("Error fetching temperature in Celsius:", error);
-    }
-  };
 
-  const clickHandler2 = async () => {
-    try {
-      const temperature = await fetchTemperatureFahrenheit(cityName);
-      setTemperature(temperature);
-    } catch (error) {
-      console.error("Error fetching temperature in Fahrenheit:", error);
-    }
-  };
 
   return (
     <div className="app">
@@ -110,8 +93,8 @@ function App() {
         airPressure={airPressure}
         direction={direction}
         windDirection={windDirection}
-        clickHandler1={clickHandler1}
-        clickHandler2={clickHandler2}
+        clickHandler1={() => fetchTemperature("C")}
+        clickHandler2={() => fetchTemperature("F")}
       />
     </div>
   );
