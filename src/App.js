@@ -1,28 +1,37 @@
-import "./App.css";
-import { windDirection } from "./utils/utils";
 import React, { useState } from "react";
+import "./App.css";
+
+// Utilities
+
+import { windDirection } from "./utils/utils";
+
+// Hooks
 import useCityData from "./hooks/useCityData";
 import useCitySelection from "./hooks/useCitySelection";
-import SearchBar from "./components/SearchBar";
-import ForecastSection from "./components/ForecastSection";
-import CityList from "./components/CityList";
 import useCurrentWeather from "./hooks/useCurrentWeather";
-import CurrentWeather from "./components/CurrentWeather";
-import CurrentDayInfo from "./components/CurrentDayInfo";
 import useTemperatureUnit from "./hooks/useTemperatureUnit";
 import useInitialLocation from "./hooks/useInitialLocation";
 import useCityFilter from "./hooks/useCityFilter";
 import useLocationData from "./hooks/useLocationData";
 import useForecastData from "./hooks/useForecastData";
 
-function App() {
+// Components
+import SearchBar from "./components/SearchBar";
+import ForecastSection from "./components/ForecastSection";
+import CityList from "./components/CityList";
+import CurrentWeather from "./components/CurrentWeather";
+import CurrentDayInfo from "./components/CurrentDayInfo";
+
+const App = () => {
+  // State
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
-  const { fetchTemperature } = useTemperatureUnit(cityName, setTemperature);
   const [temperatureUnit] = useState("C");
+
+  // Hooks
+  const { fetchTemperature } = useTemperatureUnit(cityName, setTemperature);
   const { forecastDays } = useForecastData(cityName, temperatureUnit);
   const allCities = useCityData();
-
   const {
     weatherCondition,
     time,
@@ -35,12 +44,9 @@ function App() {
     setWeatherCondition,
     setTime,
   } = useCurrentWeather(cityName);
-
   const { searchedCity, filteredCities, filterCityList, clearFilteredCities } =
     useCityFilter(allCities);
-
   const { fetchLocationData } = useLocationData();
-
   const { handleCitySelection } = useCitySelection(
     setCityName,
     setTemperature,
@@ -48,8 +54,10 @@ function App() {
     setTime
   );
 
+  // Initialize Location
   useInitialLocation(fetchLocationData, setCityName, setTemperature);
 
+  // Render
   return (
     <div className="app">
       <div className="search-container">
@@ -89,6 +97,6 @@ function App() {
       />
     </div>
   );
-}
+};
 
 export default App;
