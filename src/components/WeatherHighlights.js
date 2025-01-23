@@ -1,6 +1,8 @@
 import React from "react";
 import PercentageBar from "./PercentageBar";
 import HighlightCard from "./HighlightCard";
+import { renderWindDirectionIcon } from "../utils/utils"; // Import here
+
 
 const WeatherHighlights = ({
   windSpeed,
@@ -8,7 +10,7 @@ const WeatherHighlights = ({
   visibility,
   airPressure,
   direction,
-  windDirection,
+
 }) => {
   return (
     <div className="weather-highlights">
@@ -19,7 +21,7 @@ const WeatherHighlights = ({
       <div className="highlights-body">
         <HighlightCard title="Wind Status" value={windSpeed} unit="mph">
           <div className="wind-compass">
-            {windDirection(direction)}
+          {renderWindDirectionIcon(direction)}
             {direction}
           </div>
         </HighlightCard>

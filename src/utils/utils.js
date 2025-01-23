@@ -1,61 +1,54 @@
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
 
+// Format a date string into "Weekday, Day Month" format
 export const formatDate = (str) => {
   const date = new Date(str);
   const options = { weekday: "long", day: "numeric", month: "long" };
-  const dateStr = date.toLocaleDateString(undefined, options);
-  return dateStr;
+  return date.toLocaleDateString(undefined, options);
 };
 
-export const windDirection = (direction) => {
-  const windDirections = {
-    N: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: -45 }} />,
-    NNE: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: -22.5 }} />
-    ),
-    NE: <FontAwesomeIcon icon={faLocationArrow} />,
-    ENE: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 22.5 }} />
-    ),
-    E: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 45 }} />,
-    ESE: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 67.5 }} />
-    ),
-    SE: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 90 }} />,
-    SSE: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 112.5 }} />
-    ),
-    S: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 135 }} />,
-    SSW: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 157.5 }} />
-    ),
-    SW: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 180 }} />,
-    WSW: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 202.5 }} />
-    ),
-    W: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 225 }} />,
-    WNW: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 247.5 }} />
-    ),
-    NW: <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 270 }} />,
-    NNW: (
-      <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: 292.5 }} />
-    ),
-  };
-  return windDirections[direction];
+// Get the rotation angle for a given wind direction
+export const windDirectionAngles = {
+  N: -45,
+  NNE: -22.5,
+  NE: 0,
+  ENE: 22.5,
+  E: 45,
+  ESE: 67.5,
+  SE: 90,
+  SSE: 112.5,
+  S: 135,
+  SSW: 157.5,
+  SW: 180,
+  WSW: 202.5,
+  W: 225,
+  WNW: 247.5,
+  NW: 270,
+  NNW: 292.5,
 };
 
+// Render a wind direction icon based on direction
+export const renderWindDirectionIcon = (direction) => {
+  console.log("Direction passed to wind direction icon:", direction);
+
+  const rotation = windDirectionAngles[direction] || 0;
+  console.log("Rotation for", direction, "is", rotation);
+  
+  return <FontAwesomeIcon icon={faLocationArrow} transform={{ rotate: rotation }} />;
+};
+
+
+// Filter a list of cities by a search keyword
 export const filterCities = (keyword, allCities) => {
-  if (keyword !== "") {
-    return allCities.filter((city) =>
-      city.toLowerCase().includes(keyword.toLowerCase())
-    );
-  }
-  return [];
+  if (!keyword) return [];
+  return allCities.filter((city) =>
+    city.toLowerCase().includes(keyword.toLowerCase())
+  );
 };
 
+// Generate the path for a weather icon based on day/night and icon identifier
 export const getWeatherIconPath = (isDay, icon) => {
   const path = isDay
     ? `day/${icon.slice(39, 42)}`

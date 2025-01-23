@@ -3,7 +3,7 @@ import "./App.css";
 
 // Utilities
 
-import { windDirection } from "./utils/utils";
+import { renderWindDirectionIcon } from "./utils/utils";
 
 // Hooks
 import useCityData from "./hooks/useCityData";
@@ -91,7 +91,7 @@ const App = () => {
         visibility={visibility}
         airPressure={airPressure}
         direction={direction}
-        windDirection={windDirection}
+        windDirectionIcon={renderWindDirectionIcon}
         clickHandler1={() => fetchTemperature("C")}
         clickHandler2={() => fetchTemperature("F")}
       />
