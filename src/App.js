@@ -56,6 +56,7 @@ const App = () => {
 
   // Initialize Location
   useInitialLocation(fetchLocationData, setCityName, setTemperature);
+  console.log("filteredCities:", filteredCities);
 
   // Render
   return (

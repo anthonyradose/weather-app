@@ -6,6 +6,7 @@ const CityList = ({ filteredCities, handleCityClick, clearFilteredCities }) => {
   if (!filteredCities || filteredCities.length === 0) return null;
 
   return (
+    
     <OutsideClickHandler onOutsideClick={clearFilteredCities}>
       <div className="city-list">
         {filteredCities.map((city) => (
@@ -13,7 +14,7 @@ const CityList = ({ filteredCities, handleCityClick, clearFilteredCities }) => {
             className="city-item"
             onClick={() => handleCityClick(city)}
             onChange={() => handleCityClick(city)}
-            key={city}
+            key={city.id}
           >
             <span className="city-name">{city}</span>
           </li>
