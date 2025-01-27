@@ -17,8 +17,18 @@ body,
   height: 100%;
 }
 
+.percentage-container {
+  height: 20px;
+  width: 80%;
+  background-color: #e0e0de;
+  border-radius: 50px;
+}
 
-
+.filler {
+  height: 100%;
+  border-radius: inherit;
+  text-align: right;
+}
 
 .search-container {
   width: 30%;
@@ -41,7 +51,6 @@ body,
   width: 70%;
   padding-left: 3%;
 }
-
 
 .weather-info {
   height: 70%;
@@ -190,7 +199,6 @@ body,
 .humidity-bar > div {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 80%;
   justify-content: space-evenly;
 }
@@ -220,7 +228,6 @@ body,
   font-size: 13px;
 }
 
-
 div > .city-list {
   z-index: 100;
 }
@@ -240,4 +247,3 @@ div > .city-list {
   padding: 3%;
   border-radius: 50%;
 }
-
