@@ -26,7 +26,7 @@ const App = () => {
   // State
   const [cityName, setCityName] = useState("");
   const [temperature, setTemperature] = useState("");
-  const [temperatureUnit] = useState("C");
+  const [temperatureUnit, setTemperatureUnit] = useState("C");
 
   // Hooks
   const { fetchTemperature } = useTemperatureUnit(cityName, setTemperature);
@@ -53,6 +53,10 @@ const App = () => {
     setWeatherCondition,
     setTime
   );
+  const handleUnitChange = (unit) => {
+    setTemperatureUnit(unit);
+    fetchTemperature(unit);
+  };
 
   // Initialize Location
   useInitialLocation(fetchLocationData, setCityName, setTemperature);
@@ -93,8 +97,8 @@ const App = () => {
         airPressure={airPressure}
         direction={direction}
         windDirectionIcon={renderWindDirectionIcon}
-        clickHandler1={() => fetchTemperature("C")}
-        clickHandler2={() => fetchTemperature("F")}
+        clickHandler1={() => handleUnitChange("C")}
+        clickHandler2={() => handleUnitChange("F")}
       />
     </div>
   );
