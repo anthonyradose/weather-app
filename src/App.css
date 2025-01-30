@@ -10,6 +10,10 @@ body,
   font-family: "Roboto", sans-serif;
   outline: 1px solid red;
 }
+body {
+  background: url(./sky.jpg ) no-repeat center center fixed;
+  background-size: cover;
+}
 .app {
   text-align: center;
   display: flex;
@@ -33,7 +37,6 @@ body,
 .search-container {
   width: 30%;
   height: 100%;
-  background-color: navy;
   display: flex;
   flex-direction: column;
 }
@@ -54,7 +57,6 @@ body,
 
 .weather-info {
   height: 70%;
-  background-color: #3e3b51;
   color: white;
   display: flex;
   flex-direction: column;
@@ -63,7 +65,6 @@ body,
 .current-day-info {
   height: 20%;
   display: flex;
-  background-color: #3e3b51;
   color: white;
   justify-content: center;
   flex-direction: column;
@@ -83,14 +84,12 @@ body,
 .forecast-section {
   width: 70%;
   height: 100%;
-  background-color: skyblue;
   display: flex;
   flex-direction: column;
 }
 
 .unit-toggle-container {
   height: 20%;
-  background-color: #24142c;
   color: white;
   display: flex;
   align-items: center;
@@ -100,7 +99,6 @@ body,
 }
 .forecast-container {
   height: 80%;
-  background-color: #24142c;
   color: white;
   display: flex;
   justify-content: space-evenly;
@@ -134,7 +132,7 @@ body,
 }
 .credits-section {
   height: 15%;
-  background-color: #24142c;
+  
   color: white;
 }
 
