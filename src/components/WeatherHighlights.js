@@ -36,13 +36,6 @@ const WeatherHighlights = ({
 
         <HighlightCard title="Air Pressure" value={airPressure} unit="mb" />
       </div>
-
-      <div className="credits-section">
-        <h4>Created by Anthony Radose</h4>
-        <h4>Photo by <a rel="noopener noreferrer" target="_blank" href="https://unsplash.com/@omarvellous14?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Omar Ramadan</a> on <a rel="noopener noreferrer" target="_blank" href="https://unsplash.com/photos/green-grass-field-under-blue-sky-and-white-clouds-during-daytime-vcRHpfrsaL8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-        </h4>
-      
-      </div>
     </div>
   );
 };
