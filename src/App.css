@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
 
+*{
+  outline: 1px solid red;
+}
+
 html,
 body,
 #root {
@@ -8,7 +12,6 @@ body,
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
-  outline: 1px solid red;
 }
 body {
   background: url(./sky.jpg ) no-repeat center center fixed;
@@ -253,4 +256,79 @@ div > .city-list {
   border: #24142c;
   padding: 3%;
   border-radius: 50%;
+}
+
+/* MEDIA QUERIES:  */
+
+@media screen and (max-width: 768px) {
+  main {
+    flex-direction: column;
+    height: auto;
+  }
+  footer{
+    height: auto;
+  }
+  .search-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .forecast-section {
+    width: 100%;
+    height: auto;
+  }
+
+  .forecast-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .forecast-card {
+    width: 45%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .highlights-section {
+    height: auto;
+    padding: 10px;
+  }
+
+  .highlight-card {
+    width: 90%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .weather-icon-container,
+  .temperature-display,
+  .condition-display {
+    height: auto;
+  }
+
+  .weather-img {
+    height: 150px;
+    width: 150px;
+  }
+
+  .unit-toggle-container {
+    justify-content: center;
+  }
+
+  .city-list {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+
+  .city-item {
+    width: 100%;
+    text-align: center;
+  }
+
+  .wind-compass {
+    width: 100%;
+    justify-content: center;
+  }
 }
