@@ -1,22 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
 
-*{
+* {
   outline: 1px solid red;
+  box-sizing: border-box;
 }
 
-html,
-body,
-#root {
+html, body, #root {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
 }
+
 body {
-  background: url(./sky.jpg ) no-repeat center center fixed;
+  background: url(./sky.jpg) no-repeat center center fixed;
   background-size: cover;
 }
+
 .app {
   text-align: center;
   display: flex;
@@ -24,13 +25,18 @@ body {
   height: 100%;
   flex-direction: column;
 }
-main{
+
+main {
   height: 90%;
   display: flex;
+  padding: 20px;
+  gap: 20px;
 }
-footer{
+
+footer {
   background: white;
-  height: 10%;
+  padding: 10px;
+  margin-top: 10%;
 }
 
 .percentage-container {
@@ -38,6 +44,7 @@ footer{
   width: 80%;
   background-color: #e0e0de;
   border-radius: 50px;
+  margin: 10px auto;
 }
 
 .filler {
@@ -51,7 +58,9 @@ footer{
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 15px;
 }
+
 .search-input {
   height: 10%;
   background-color: #3e3b51;
@@ -59,12 +68,13 @@ footer{
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  padding: 10px;
 }
 
 #site-search {
   height: 60%;
   width: 70%;
-  padding-left: 3%;
+  padding: 5px;
 }
 
 .weather-info {
@@ -73,31 +83,15 @@ footer{
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 10px;
 }
-.current-day-info {
-  height: 20%;
-  display: flex;
-  color: white;
-  justify-content: center;
-  flex-direction: column;
-}
-.weather-icon-container,
-.temperature-display,
-.condition-display {
-  height: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.weather-img {
-  height: 200px;
-  width: 200px;
-}
+
 .forecast-section {
   width: 70%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 15px;
 }
 
 .unit-toggle-container {
@@ -106,78 +100,44 @@ footer{
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 3%;
-  align-items: flex-end;
+  padding: 10px 20px;
 }
+
 .forecast-container {
   height: 80%;
   color: white;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding-left: 3%;
-  padding-right: 3%;
+  padding: 15px;
 }
+
 .highlights-section {
   height: 60%;
   display: flex;
-  /* background-color: aquamarine; */
   background-color: #24142c;
   flex-direction: column;
+  padding: 15px;
 }
+
 .highlights-header {
   height: 15%;
   background-color: #24142c;
   text-align: center;
   color: white;
-  margin-left: 7%;
-  margin-right: 7%;
+  margin: 0 auto 10px;
+  padding: 10px;
 }
+
 .highlights-body {
   height: 70%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  padding-left: 2%;
-  padding-right: 2%;
-}
-.credits-section {
-  height: 15%;
-  
-  color: white;
+  padding: 10px;
 }
 
-.city-list {
-  background: #3e3b51;
-  overflow: auto;
-  border-collapse: inherit;
-  position: fixed;
-  top: 10vh;
-  bottom: 0;
-  left: 0;
-  padding: 0;
-  width: 30%;
-  margin: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.city-item {
-  cursor: pointer;
-  padding: 5% 0 5% 3%;
-  width: 80%;
-  color: white;
-  display: flex;
-  margin: 5% 7%;
-}
-.city-item:hover {
-  border: 1px solid white;
-}
-.location-search-icon {
-  cursor: pointer;
-}
 .forecast-card {
   width: 15%;
   height: 75%;
@@ -186,125 +146,50 @@ footer{
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  padding: 15px;
 }
+
 .highlight-card {
   width: 40%;
   height: 40%;
   background-color: #3e3b51;
   color: white;
+  padding: 15px;
 }
-.highlight-card > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-evenly;
-  align-items: center;
-}
+
 .humidity-bar {
   width: 100%;
   display: flex;
   justify-content: center;
-}
-.humidity-bar > div {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  justify-content: space-evenly;
-}
-.highlight-title,
-.highligh-value {
-  margin: unset;
+  padding: 10px;
 }
 
-.day-date {
-  height: 50%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-.location-info {
-  height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.forecast-icon {
-  height: 100px;
-  width: 100px;
-}
-.forecast-temp {
-  font-size: 13px;
-}
-
-div > .city-list {
-  z-index: 100;
-}
-
-.wind-compass {
-  display: flex;
-  width: 30%;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.wind-direction > svg {
-  transform-origin: 0.4375em 0.5em;
-  background: white;
-  color: #24142c;
-  border: #24142c;
-  padding: 3%;
-  border-radius: 50%;
-}
-
-/* MEDIA QUERIES:  */
+/***** MEDIA QUERIES *****/
 
 @media screen and (max-width: 768px) {
   main {
     flex-direction: column;
     height: auto;
+    padding: 10px;
   }
-  footer{
-    height: auto;
-  }
-  .search-container {
+  
+  .search-container, .forecast-section {
     width: 100%;
     height: auto;
-  }
-
-  .forecast-section {
-    width: 100%;
-    height: auto;
+    padding: 10px;
   }
 
   .forecast-container {
     flex-wrap: wrap;
     justify-content: center;
-    padding: 0;
+    padding: 5px;
   }
 
-  .forecast-card {
-    width: 45%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-
-  .highlights-section {
-    height: auto;
-    padding: 10px;
-  }
-
-  .highlight-card {
+  .forecast-card, .highlight-card {
     width: 90%;
     height: auto;
     margin-bottom: 10px;
-  }
-
-  .weather-icon-container,
-  .temperature-display,
-  .condition-display {
-    height: auto;
+    padding: 10px;
   }
 
   .weather-img {
@@ -312,23 +197,10 @@ div > .city-list {
     width: 150px;
   }
 
-  .unit-toggle-container {
-    justify-content: center;
-  }
-
   .city-list {
     width: 100%;
     height: auto;
     position: static;
-  }
-
-  .city-item {
-    width: 100%;
-    text-align: center;
-  }
-
-  .wind-compass {
-    width: 100%;
-    justify-content: center;
+    padding: 10px;
   }
 }
