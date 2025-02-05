@@ -1,11 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
 
 * {
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -59,6 +61,7 @@ footer {
   display: flex;
   flex-direction: column;
   padding: 15px;
+  position: relative
 }
 
 .search-input {
@@ -84,6 +87,15 @@ footer {
   flex-direction: column;
   justify-content: center;
   padding: 10px;
+}
+
+.city-list {
+  position: absolute;
+  top: 2.4rem;
+  width: calc(70% - 15px);
+  overflow: auto;
+  height: 27.3rem;
+  background-color: blue;
 }
 
 .forecast-section {
@@ -166,41 +178,67 @@ footer {
 
 /***** MEDIA QUERIES *****/
 
-@media screen and (max-width: 768px) {
+@media (min-width: 320px) {
+  /* Styles for 320px and above */
+}
+@media (min-width: 375px) {
+  /* Styles for 375px and above */
+}
+@media (min-width: 425px) {
+  /* Styles for 425px and above */
+}
+@media (min-width: 576px) {
+  /* Styles for 576px and above */
+}
+@media (min-width: 768px) {
+  /* Styles for 768px and above */
+}
+@media (min-width: 992px) {
+  /* Styles for 992px and above */
+}
+@media (min-width: 993px){
+  /* Styles for 993px and 1023px */
+  .city-list {
+    top: 2.7rem;
+    width: calc(70% - 21px);
+  }
+
+}
+@media (min-width: 1024px) {
+  /* Styles for 1024px and above */
+}
+@media (min-width: 1200px) {
+  /* Styles for 1200px and above */
+}
+@media (min-width: 1440px) {
+  /* Styles for 1440px and above */
+}
+@media screen and (max-width: 992px) {
   main {
     flex-direction: column;
     height: auto;
     padding: 10px;
   }
-  
-  .search-container, .forecast-section {
+  .search-container,
+  .forecast-section {
     width: 100%;
     height: auto;
     padding: 10px;
   }
-
   .forecast-container {
     flex-wrap: wrap;
     justify-content: center;
     padding: 5px;
   }
-
-  .forecast-card, .highlight-card {
+  .forecast-card,
+  .highlight-card {
     width: 90%;
     height: auto;
     margin-bottom: 10px;
     padding: 10px;
   }
-
   .weather-img {
     height: 150px;
     width: 150px;
-  }
-
-  .city-list {
-    width: 100%;
-    height: auto;
-    position: static;
-    padding: 10px;
   }
 }
