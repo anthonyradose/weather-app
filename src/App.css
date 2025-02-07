@@ -208,6 +208,16 @@ footer {
     top: 2.7rem;
     width: calc(70% - 21px);
   }
+  .forecast-icon{
+    height: 64px;
+    width: 64px;
+  }
+  .forecast-card{
+    width: 20%;
+    height: 100%;
+    padding: 0.3rem;
+    margin: 0.3rem;
+  }
 
 }
 @media (min-width: 1024px) {
