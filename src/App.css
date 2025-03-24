@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
 
-* {
+/* * {
   outline: 1px solid red;
   box-sizing: border-box;
-}
+} */
 
 html,
 body,
@@ -61,9 +61,11 @@ footer {
   display: flex;
   flex-direction: column;
   padding: 15px;
-  position: relative
+  position: relative;
 }
-
+.search-input-container {
+  display: flex;
+}
 .search-input {
   height: 10%;
   background-color: #3e3b51;
@@ -97,7 +99,7 @@ footer {
   max-height: 27.3rem;
   background-color: white;
 }
-.city-item{
+.city-item {
   padding: 0.5rem;
   text-align: start;
   width: 100%;
@@ -166,6 +168,9 @@ footer {
   align-items: center;
   padding: 15px;
 }
+.forecast-card > div:nth-child(3) > .forecast-temp {
+  margin: 0 5px;
+}
 
 .highlight-card {
   width: 40%;
@@ -201,24 +206,36 @@ footer {
 }
 @media (min-width: 992px) {
   /* Styles for 992px and above */
+  .highlight-card:nth-of-type(1) {
+    padding: 0;
+  }
+  .highlight-card:nth-of-type(1) > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .highlight-card:first-of-type > div .highlight-title,
+  .highlight-card:first-of-type > div .highlight-value {
+    margin: 0;
+  }
 }
-@media (min-width: 993px){
+@media (min-width: 993px) {
   /* Styles for 993px and 1023px */
   .city-list {
     top: 2.7rem;
     width: calc(70% - 21px);
   }
-  .forecast-icon{
+  .forecast-icon {
     height: 64px;
     width: 64px;
   }
-  .forecast-card{
+  .forecast-card {
     width: 20%;
     height: 100%;
     padding: 0.3rem;
     margin: 0.3rem;
   }
-
 }
 @media (min-width: 1024px) {
   /* Styles for 1024px and above */
