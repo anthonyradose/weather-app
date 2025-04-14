@@ -35,10 +35,28 @@ main {
   gap: 20px;
 }
 
-footer {
-  background: white;
-  padding: 10px;
-  margin-top: 10%;
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background-color: #f0f0f0;
+  font-size: 0.875rem;
+  color: #444;
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+.footer a {
+  color: #6c63ff;
+  text-decoration: underline dotted;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #4a47a3;
+  text-decoration: underline;
 }
 
 .percentage-container {
@@ -204,6 +222,7 @@ footer {
 @media (min-width: 768px) {
   /* Styles for 768px and above */
 }
+
 @media (min-width: 992px) {
   /* Styles for 992px and above */
   .highlight-card:nth-of-type(1) {
@@ -218,6 +237,11 @@ footer {
   .highlight-card:first-of-type > div .highlight-title,
   .highlight-card:first-of-type > div .highlight-value {
     margin: 0;
+  }
+  .footer {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
   }
 }
 @media (min-width: 993px) {
